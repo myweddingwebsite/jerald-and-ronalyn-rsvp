@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>RSVP &#8212; Jerald &amp; Ronalyn</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Cinzel:wght@400;500;600;700&family=Jost:wght@300;400;500;600&family=Pinyon+Script&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      /* Greenery — moss green · eucalyptus green · white · touch of gold */
+      --navy-deep: #2F3B2A;
+      --navy:      #5C6B3A;
+      --navy-soft: #C8A55A;
+
+      --army-deep: #5C6B3A;
+      --army:      #FDFDFB;
+      --army-soft: #5F8574;
+
+      --white: #FFFFFF;
+      --ivory:  #FDFDFB;
+      --ivory-mid: #F3EAD3;
+
+      --text-light:       #2F3B2A;
+      --text-light-soft:  rgba(47,59,42,0.92);
+      --text-light-muted: rgba(47,59,42,0.82);
+      --border-light:     rgba(47,59,42,0.30);
+
+      --text-dark:  #2F3B2A;
+      --text-mid:   rgba(47,59,42,0.86);
+      --text-soft:  rgba(47,59,42,0.65);
+      --text-muted: rgba(47,59,42,0.45);
+
+      --border:      rgba(47,59,42,0.18);
+      --border-mid:  rgba(47,59,42,0.12);
+      --border-soft: rgba(47,59,42,0.08);
+
+      --border-oncard:      rgba(47,59,42,0.42);
+      --border-oncard-mid:  rgba(200,165,90,0.55);
+      --border-oncard-soft: rgba(200,165,90,0.45);
+
+      --shadow-card: 0 34px 84px rgba(47,59,42,0.28), 0 10px 28px rgba(47,59,42,0.18);
+      --transition:  0.28s cubic-bezier(0.4,0,0.2,1);
+      --radius-outer: 30px;
+      --radius-mid:   27px;
+      --radius-inner: 24px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
+
+    body {
+      min-height: 100vh;
+      font-family: 'Jost', sans-serif;
+      background-color: #F4F6F1;
+      background-image:
+        radial-gradient(ellipse 120% 50% at 50% 0%,   rgba(255,255,255,0.9) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 70% at 0% 100%,   rgba(47,59,42,0.08) 0%, transparent 55%),
+        radial-gradient(ellipse 55% 65% at 100% 40%,  rgba(200,165,90,0.14) 0%, transparent 55%),
+        linear-gradient(180deg, #FDFDFB 0%, #F3F6F0 45%, #DCE6DF 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 56px 16px 72px;
+      overflow-x: hidden;
+      position: relative;
+    }
+    .bg-glow { position: fixed; pointer-events: none; z-index: 0; border-radius: 50%; }
+    .bg-glow-1 {
+      width: 680px; height: 680px; top: -260px; right: -200px;
+      background: radial-gradient(circle, rgba(47,59,42,0.07) 0%, transparent 66%);
+    }
+    .bg-glow-2 {
+      width: 540px; height: 540px; bottom: -190px; left: -170px;
+      background: radial-gradient(circle, rgba(110,145,130,0.30) 0%, transparent 66%);
+    }
+
+    /* ================================================================
+       CARD
+    ================================================================ */
+    .card-wrap {
+      position: relative; z-index: 3;
+      width: 100%; max-width: 600px;
+    }
+    @keyframes cardRise {
+      from { opacity: 0; transform: translateY(46px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .card-f1 {
+      padding: 3px;
+      border-radius: var(--radius-outer);
+      background: linear-gradient(145deg, #4A5A34, #C8A55A, #DCE6DF, #C8A55A, #4A5A34);
+      box-shadow: var(--shadow-card),
+        0 0 0 6px  rgba(47,59,42,0.08),
+        0 0 0 10px rgba(200,165,90,0.10);
+    }
+    .card-f2 { padding: 2px; border-radius: var(--radius-mid); background: #FDFDFB; }
+
+    /* CARD SURFACE — white card, moss ink, eucalyptus bands, gold accents */
+    .card {
+      background: linear-gradient(165deg, #FDFDFB 0%, #FBFBF8 55%, #EEF2EC 100%);
+      overflow: hidden; position: relative;
+      border-radius: var(--radius-inner);
+    }
+    .card::before {
+      content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.73' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+    }
+    .card::after {
+      content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 70% 50% at 25% 15%, rgba(255,255,255,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 55% at 80% 85%, rgba(200,165,90,0.14) 0%, transparent 60%);
+    }
+
+    .card-ib1 { position: absolute; inset: 11px; border: 1px solid var(--border-oncard-soft); border-radius: calc(var(--radius-inner) - 4px); pointer-events: none; z-index: 1; }
+
+    .card > *:not(.card-ib1) { position: relative; z-index: 2; }
+
+    .card-accent-stripe {
+      height: 5px;
+      background: linear-gradient(90deg,
+        #C8A55A 0%, #E8D7A8 25%, #FDFDFB 50%, #E8D7A8 75%, #C8A55A 100%);
+      position: relative; z-index: 3;
+    }
+
+    /* ================================================================
+       HEADER
+    ================================================================ */
+    .card-header {
+      background: transparent;
+      padding: 46px 56px 36px;
+      text-align: center;
+      position: relative; overflow: hidden;
+      border-bottom: 2px solid var(--border-oncard-mid);
+    }
+        .header-img { display: block; width: 100%; max-width: 100%; height: auto; margin: 0; }
+    .tagline-rsvp {
+      font-family: 'Cinzel', serif; font-size: clamp(19px, 4.2vw, 26px); font-weight: 500;
+      letter-spacing: 0.5em; text-indent: 0.5em; color: #2F3B2A; margin-bottom: 6px;
+      position: relative; z-index: 1;
+    }
+    .card-header > *:not(.greenery-sprig) { position: relative; z-index: 1; }
+
+    .header-eyebrow {
+      font-family: 'Jost', sans-serif; font-size: 12px; font-weight: 500;
+      letter-spacing: 0.4em; color: var(--text-light);
+      text-transform: uppercase; margin-bottom: 20px; opacity: 1;
+    }
+
+    .couple-name {
+      font-family: 'Pinyon Script', cursive;
+      font-style: normal; font-weight: 400;
+      font-size: clamp(44px, calc((100vw - 110px) / 5.2), 84px);
+      color: var(--text-light);
+      line-height: 1.15; display: block;
+    }
+    .card-header .header-eyebrow, .card-header .wedding-date { color: var(--text-light); opacity: 1; }
+    .card-header .couple-name {
+      color: var(--text-light); opacity: 1;
+      /* extra room so the script swashes (J, g) are never clipped */
+      padding: 0.14em 0.2em 0.34em; margin: -0.14em 0 -0.34em; white-space: nowrap;
+    }
+    .couple-amp {
+      font-family: 'Pinyon Script', cursive;
+      font-style: normal; font-weight: 400;
+      font-size: clamp(30px, 6vw, 40px);
+      color: #5F8574; display: block;
+      line-height: 1.1; margin: 4px 0; opacity: 1;
+    }
+
+    .wedding-date {
+      font-family: 'Jost', sans-serif; font-size: 11px; font-weight: 400;
+      letter-spacing: 0.5em; color: var(--text-light);
+      text-transform: uppercase; margin: 12px 0 20px; opacity: 0.9;
+    }
+
+    .names-rule {
+      display: flex; align-items: center; gap: 10px;
+      margin: 20px 0 16px;
+    }
+    .names-rule-line-l { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--text-light-muted), var(--text-light)); }
+    .names-rule-line-r { flex: 1; height: 1px; background: linear-gradient(90deg, var(--text-light), var(--text-light-muted), transparent); }
+    .names-rule-flower  { font-size: 12px; color: var(--text-light); flex-shrink: 0; opacity: 0.95; }
+    .names-rule-dot     { width: 3px; height: 3px; border-radius: 50%; background: var(--text-light-muted); flex-shrink: 0; }
+
+    .header-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(19px, 4.2vw, 28px); font-weight: 400;
+      letter-spacing: 0.52em; color: var(--text-light);
+      display: block; margin-bottom: 10px; text-indent: 0.52em;
+      position: relative;
+    }
+    .header-title::after {
+      content: ''; display: block; width: 46px; height: 1px;
+      margin: 10px auto 0;
+      background: linear-gradient(90deg, transparent, var(--text-light) 30%, var(--text-light-muted) 50%, var(--text-light) 70%, transparent);
+      text-indent: 0;
+    }
+    /* Tagline band — olive green, ivory text */
+    .tagline-band {
+      padding: 18px 56px;
+      background: linear-gradient(135deg, #557A69, #668C7B 55%, #557A69);
+      border-bottom: 1px solid rgba(47,59,42,0.18);
+      text-align: center;
+      position: relative;
+    }
+    .tagline-band::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(120deg, rgba(255,255,255,0.10) 0%, transparent 55%);
+    }
+    .tagline-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(16px, 3vw, 21px); font-style: italic; font-weight: 300;
+      color: #FDFDFB; line-height: 1.68;
+      position: relative; z-index: 1;
+    }
+    .tagline-text strong { font-style: normal; font-weight: 600; color: #FFFFFF; }
+
+    /* ================================================================
+       FORM
+    ================================================================ */
+    .form-body { padding: 32px 56px 0; }
+    .field-group { margin-bottom: 28px; }
+
+    .field-label {
+      display: block; font-family: 'Jost', sans-serif;
+      font-size: clamp(11px, 2vw, 14px); font-weight: 500;
+      letter-spacing: 0.30em; text-transform: uppercase;
+      color: var(--text-light); margin-bottom: 10px;
+    }
+
+    .field-input {
+      width: 100%; padding: 10px 0 12px;
+      background: transparent; border: none;
+      border-bottom: 1px solid var(--border-oncard);
+      border-radius: 0; color: var(--text-light);
+      font-family: 'Jost', sans-serif; font-size: 16px; font-weight: 400;
+      outline: none; transition: border-color var(--transition);
+    }
+    .field-input:focus { border-bottom-color: var(--army-soft); }
+    .field-input::placeholder { color: var(--text-light-muted); }
+    .field-input:disabled { color: var(--text-light-muted); }
+
+    .status-bar {
+      display: flex; align-items: center; gap: 8px;
+      margin-top: 12px; font-size: 13px; color: var(--text-light-muted);
+      font-family: 'Jost', sans-serif;
+    }
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; background: var(--text-light-muted); }
+    .status-bar.found .status-dot { background: var(--army-soft); }
+    .status-bar.error .status-dot { background: #8F2A22; }
+    .status-bar.error { color: #8F2A22; }
+
+    .status-bar.suggest { color: #2F3B2A; }
+    .status-bar.suggest .status-dot { background: #5F8574; }
+
+    /* ---- "Did you mean" suggestions ---- */
+    .suggest-box { display: none; flex-direction: column; gap: 8px; margin-top: 12px; }
+    .suggest-box.visible { display: flex; }
+    @keyframes suggestIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .suggest-btn {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      width: 100%; min-height: 48px; padding: 10px 16px; text-align: left; cursor: pointer;
+      background: rgba(95,133,116,0.18); border: 1px solid var(--border-oncard); border-radius: 8px;
+      font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 500; color: var(--text-light);
+      transition: background var(--transition), border-color var(--transition);
+      -webkit-tap-highlight-color: transparent;
+    }
+    .suggest-btn:hover { background: rgba(95,133,116,0.32); border-color: #2F3B2A; }
+    .suggest-btn:focus-visible { outline: 2px solid #2F3B2A; outline-offset: 2px; }
+    .suggest-name { word-break: break-word; }
+    .suggest-go { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px;
+      color: #5C6B3A; white-space: nowrap; flex-shrink: 0; }
+    @media (prefers-reduced-motion: reduce) { .suggest-box.visible { animation: none; } }
+
+    .seat-panel {
+      text-align: center; padding: 22px 20px;
+      background: #DCE6DF;
+      border-top: 1px solid rgba(47,59,42,0.18);
+      border-bottom: 1px solid rgba(47,59,42,0.18);
+      margin: 0 -56px;
+    }
+    .seat-panel-label {
+      font-family: 'Jost', sans-serif; font-size: 11px; font-weight: 500;
+      letter-spacing: 0.24em; text-transform: uppercase; color: #2F3B2A;
+      margin-bottom: 6px;
+    }
+    .seat-number {
+      font-family: 'Cinzel', serif; font-size: 34px; font-weight: 600; color: #2F3B2A;
+    }
+    .seat-sublabel {
+      font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 15px; color: #2F3B2A; margin-top: 2px;
+    }
+
+    .guest-section { padding: 0 56px; }
+    .guest-hint {
+      font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px;
+      color: var(--text-light-muted); margin-top: 4px; margin-bottom: 16px;
+    }
+
+    .guest-field-row {
+      display: none; align-items: center; gap: 12px;
+      padding: 10px 0; border-bottom: 1px dashed var(--border-oncard);
+    }
+    .guest-field-row.show { display: flex; }
+    .guest-num { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px; color: var(--text-light); width: 22px; flex-shrink: 0; }
+    .guest-input-wrap { flex: 1; min-width: 0; }
+    .guest-input-wrap .field-input { padding: 6px 0 8px; font-size: 15px; }
+
+    .attend-toggle { display: flex; align-items: center; gap: 8px; cursor: pointer; flex-shrink: 0; }
+    .attend-toggle input { display: none; }
+    .toggle-track {
+      width: 32px; height: 17px; border-radius: 20px;
+      background: rgba(47,59,42,0.18); position: relative; flex-shrink: 0;
+      transition: background var(--transition);
+      border: 1px solid var(--border-oncard);
+    }
+    .toggle-thumb {
+      position: absolute; top: 1px; left: 1px;
+      width: 13px; height: 13px; border-radius: 50%;
+      background: #fff; transition: transform var(--transition);
+      box-shadow: 0 1px 3px rgba(47,59,42,0.35);
+    }
+    .attend-toggle input:checked + .toggle-track { background: #5F8574; border-color: #5F8574; }
+    .attend-toggle input:checked + .toggle-track .toggle-thumb { transform: translateX(15px); background: #FFFFFF; }
+    .toggle-label { font-size: 12px; color: var(--text-light-muted); min-width: 70px; text-align: right; }
+
+    .message-group { padding: 6px 56px 0; }
+    .message-input {
+      width: 100%; min-height: 96px; resize: vertical; padding: 12px 14px;
+      background: rgba(255,255,255,0.55); border: 1px solid var(--border-oncard);
+      border-radius: 10px; color: var(--text-light);
+      font-family: 'Cormorant Garamond', serif; font-size: 17px; line-height: 1.55;
+      outline: none; transition: border-color var(--transition);
+    }
+    .message-input:focus { border-color: #5F8574; background: rgba(255,255,255,0.8); }
+    .message-input::placeholder { color: var(--text-light-muted); font-style: italic; }
+    .optional-tag { font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 500;
+      font-size: 14px; letter-spacing: 0.02em; text-transform: none; color: var(--text-light-muted); }
+    .message-count { text-align: right; font-size: 12px; color: var(--text-light-muted); margin-top: 6px; }
+    .summary-message { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 15px;
+      color: #2F3B2A; line-height: 1.55; text-align: right; white-space: pre-wrap; word-break: break-word; }
+
+    .btn-wrap { padding: 30px 56px 36px; }
+    .btn-submit {
+      width: 100%; padding: 16px; cursor: pointer;
+      background: #4A5A34; color: #FDFDFB;
+      border: 1px solid #4A5A34; border-radius: 8px;
+      font-family: 'Jost', sans-serif; font-size: 13px; font-weight: 500;
+      letter-spacing: 0.32em; text-transform: uppercase; text-indent: 0.32em;
+      transition: all var(--transition); position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+    }
+    .btn-submit:hover:not(:disabled) { background: #2F3B2A; border-color: #2F3B2A; }
+    .btn-submit:disabled { opacity: 0.55; cursor: not-allowed; }
+    .btn-spinner {
+      display: none; width: 14px; height: 14px;
+      border: 1.5px solid rgba(251,247,236,0.4); border-top-color: #FDFDFB;
+      border-radius: 50%; animation: spin .8s linear infinite;
+    }
+    .btn-submit.loading .btn-spinner { display: inline-block; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .note-section {
+      padding: 24px 56px 30px;
+      border-top: 1px solid var(--border-oncard-mid); margin-top: 6px; text-align: center;
+    }
+    .note-section p {
+      font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px;
+      line-height: 1.9; color: var(--text-light-muted); margin-bottom: 10px;
+    }
+    .note-section p:last-child { margin-bottom: 0; }
+    .note-section p strong { color: #2F3B2A; font-style: normal; font-weight: 600; }
+
+    /* Deadline band — olive green, ivory text */
+    .deadline-band {
+      padding: 14px 56px;
+      background: linear-gradient(135deg, #557A69, #668C7B 55%, #557A69);
+      border-top: 1px solid rgba(47,59,42,0.18);
+      text-align: center;
+      position: relative;
+    }
+    .deadline-band::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(120deg, rgba(255,255,255,0.10) 0%, transparent 55%);
+    }
+    .deadline-label {
+      font-family: 'Jost', sans-serif;
+      font-size: clamp(9px, 1.8vw, 12px); font-weight: 600;
+      letter-spacing: 0.38em; text-transform: uppercase;
+      color: #FDFDFB; opacity: 1;
+      display: block; margin-bottom: 4px;
+      position: relative; z-index: 1;
+    }
+    .deadline-date {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(16px, 3.2vw, 22px); font-style: italic; font-weight: 500;
+      color: #FFFFFF; letter-spacing: 0.06em;
+      position: relative; z-index: 1;
+    }
+
+    .footer-mono { display: block; width: 110px; height: auto; margin: 0 auto 4px; }
+    .page-footer { margin-top: 0; padding: 4px 30px 28px; text-align: center; position: relative; z-index: 3; }
+    .page-footer p {
+      font-family: 'Pinyon Script', cursive;
+      font-size: clamp(18px, 4.8vw, 21px); white-space: normal; line-height: 1.35;
+      color: var(--text-light);
+    }
+
+
+    /* ===== Greenery corner sprigs ===== */
+    .greenery-sprig { position: absolute; top: 14px; width: 118px; height: 118px; pointer-events: none; z-index: 0 !important; }
+    .greenery-sprig.l { left: 12px; }
+    .greenery-sprig.r { right: 12px; }
+    @media (max-width: 540px) { .greenery-sprig { width: 70px; height: 70px; top: 10px; } .greenery-sprig.l { left: 8px; } .greenery-sprig.r { right: 8px; } }
+
+    /* ================= MODAL (summary layout) ================= */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(26,34,24,0.78);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 999; padding: 24px; opacity: 0; pointer-events: none;
+      transition: opacity 0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+    .modal-overlay.active { opacity: 1; pointer-events: all; }
+    .modal {
+      width: 100%; max-width: 470px;
+      transform: scale(0.94) translateY(18px);
+      transition: transform 0.45s cubic-bezier(0.16,1,0.3,1);
+      background: #FFFDF8; border: 1px solid #C8A55A;
+      border-radius: 20px; overflow: hidden;
+      max-height: 90vh; display: flex; flex-direction: column;
+      box-shadow: 0 35px 100px rgba(0,0,0,0.6);
+    }
+    .modal-overlay.active .modal { transform: scale(1) translateY(0); }
+    .modal-accent { height: 4px; background: linear-gradient(90deg, #C8A55A, #E8D7A8, #FDFDFB, #E8D7A8, #C8A55A); flex-shrink: 0; }
+    .modal-scroll { overflow-y: auto; }
+    .modal-header {
+      padding: 36px 30px 20px; text-align: center;
+      border-bottom: 1px solid rgba(200,165,90,0.30);
+      background: radial-gradient(circle at 50% 0%, #F2F5EF 0%, #FFFDF8 80%);
+    }
+    .modal-names { font-family: 'Pinyon Script', cursive; font-weight: 400; font-size: clamp(28px, 7.4vw, 36px); color: #4A5A34; line-height: 1.25; padding: 0.04em 0.2em 0.2em; }
+    .modal-amp { display: block; font-size: 0.7em; color: #5F8574; line-height: 1.1; }
+    .modal-tagline {
+      font-family: 'Cinzel', serif; font-size: 9px; font-weight: 600;
+      letter-spacing: 0.32em; color: #5C6B3A; margin-top: 6px;
+      display: block; text-transform: uppercase;
+    }
+    .modal-body { padding: 26px 32px 34px; text-align: center; }
+    .modal-title {
+      font-family: 'Cinzel', serif; font-size: 13px; font-weight: 600;
+      letter-spacing: 0.34em; text-transform: uppercase; color: #2F3B2A; margin-bottom: 10px;
+    }
+    .modal-message {
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: 17px; font-weight: 500; color: #4A5A34; line-height: 1.7; margin-bottom: 24px;
+    }
+    .summary-card {
+      background: #FDFDFB; border: 1px solid rgba(200,165,90,0.30);
+      border-radius: 10px; padding: 20px 22px; text-align: left; margin-bottom: 24px;
+    }
+    .summary-row {
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 12px; padding: 11px 0; border-bottom: 1px solid rgba(200,165,90,0.20);
+    }
+    .summary-row:last-child { border-bottom: none; }
+    .summary-label {
+      font-family: 'Cinzel', serif; font-size: 9.5px; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase; color: #5C6B3A; flex-shrink: 0;
+    }
+    .summary-value { font-family: 'Jost', sans-serif; font-size: 13px; font-weight: 500; color: #2F3B2A; text-align: right; }
+    .summary-badge {
+      display: inline-block; padding: 4px 10px; border-radius: 4px;
+      font-family: 'Jost', sans-serif; font-size: 10px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+    }
+    .summary-badge.accept { background: rgba(95,133,116,0.22); color: #3E5A4D; border: 1px solid rgba(79,114,98,0.6); }
+    .summary-badge.decline { background: rgba(143,42,34,0.1); color: #8F2A22; border: 1px solid rgba(143,42,34,0.3); }
+    .summary-names { list-style: none; text-align: right; }
+    .summary-names li { font-size: 13px; color: #2F3B2A; line-height: 1.6; }
+    .modal-actions { display: flex; gap: 10px; }
+    .btn-modal-close {
+      display: inline-flex; align-items: center; justify-content: center;
+      flex: 1; padding: 15px 24px; border-radius: 8px;
+      border: 1px solid #4A5A34; cursor: pointer;
+      font-family: 'Cinzel', serif; font-size: 11px; font-weight: 600;
+      letter-spacing: 0.28em; text-transform: uppercase;
+      transition: all 0.35s cubic-bezier(0.16,1,0.3,1);
+      background: #4A5A34; color: #FDFDFB;
+    }
+    .btn-modal-close:hover { background: #2F3B2A; border-color: #2F3B2A; }
+
+    @media (max-width: 540px) {
+      .card-header, .tagline-band, .form-body, .btn-wrap,
+      .note-section, .guest-section, .deadline-band, .message-group { padding-left: 26px; padding-right: 26px; }
+      .modal-header, .modal-body { padding-left: 20px; padding-right: 20px; }
+      .seat-panel { margin: 0 -26px; }
+    }
+    @media (max-width: 380px) {
+      .suggest-btn { font-size: 14px; padding: 10px 12px; }
+      .suggest-go { display: none; }
+      .card-header, .tagline-band, .form-body, .btn-wrap,
+      .note-section, .guest-section, .deadline-band, .message-group { padding-left: 18px; padding-right: 18px; }
+      .seat-panel { margin: 0 -18px; }
+    }
+    /* No animation */
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .modal { transform: none !important; }
+    .btn-spinner { animation: spin .8s linear infinite !important; }
+  </style>
+</head>
+<body>
+
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <!-- ══ MAIN CARD ══ -->
+  <div class="card-wrap">
+    <div class="card-f1"><div class="card-f2"><div class="card">
+      <div class="card-accent-stripe"></div>
+      <div class="card-ib1"></div>
+
+      <div class="card-header">
+        <svg class="greenery-sprig l" viewBox="0 0 100 100" aria-hidden="true"><g><path d="M6 2 C 30 14, 50 30, 66 52 S 88 80, 96 96" fill="none" stroke="#5C6B3A" stroke-width="1.3" opacity="0.6"/><ellipse cx="20" cy="8" rx="9" ry="6.5" transform="rotate(-25 20 8)" fill="#7FA393" opacity="0.55"/><ellipse cx="34" cy="18" rx="10" ry="7.2" transform="rotate(30 34 18)" fill="#5F8574" opacity="0.55"/><ellipse cx="44" cy="32" rx="9" ry="6.5" transform="rotate(-20 44 32)" fill="#7FA393" opacity="0.55"/><ellipse cx="56" cy="42" rx="10" ry="7.2" transform="rotate(35 56 42)" fill="#5F8574" opacity="0.55"/><ellipse cx="64" cy="58" rx="8" ry="5.8" transform="rotate(-15 64 58)" fill="#7FA393" opacity="0.55"/><ellipse cx="78" cy="64" rx="9" ry="6.5" transform="rotate(40 78 64)" fill="#5F8574" opacity="0.55"/><ellipse cx="84" cy="80" rx="7" ry="5.0" transform="rotate(-10 84 80)" fill="#7FA393" opacity="0.55"/><circle cx="28" cy="4" r="4" fill="#6B7A47" opacity="0.45"/><circle cx="50" cy="26" r="4" fill="#6B7A47" opacity="0.45"/><circle cx="70" cy="48" r="3.5" fill="#6B7A47" opacity="0.45"/><circle cx="90" cy="70" r="3" fill="#6B7A47" opacity="0.45"/><circle cx="40" cy="12" r="1.6" fill="#C8A55A"/><circle cx="62" cy="34" r="1.4" fill="#C8A55A"/><circle cx="80" cy="56" r="1.2" fill="#C8A55A"/></g></svg>
+        <svg class="greenery-sprig r" viewBox="0 0 100 100" aria-hidden="true"><g transform="scale(-1,1) translate(-100,0)"><path d="M6 2 C 30 14, 50 30, 66 52 S 88 80, 96 96" fill="none" stroke="#5C6B3A" stroke-width="1.3" opacity="0.6"/><ellipse cx="20" cy="8" rx="9" ry="6.5" transform="rotate(-25 20 8)" fill="#7FA393" opacity="0.55"/><ellipse cx="34" cy="18" rx="10" ry="7.2" transform="rotate(30 34 18)" fill="#5F8574" opacity="0.55"/><ellipse cx="44" cy="32" rx="9" ry="6.5" transform="rotate(-20 44 32)" fill="#7FA393" opacity="0.55"/><ellipse cx="56" cy="42" rx="10" ry="7.2" transform="rotate(35 56 42)" fill="#5F8574" opacity="0.55"/><ellipse cx="64" cy="58" rx="8" ry="5.8" transform="rotate(-15 64 58)" fill="#7FA393" opacity="0.55"/><ellipse cx="78" cy="64" rx="9" ry="6.5" transform="rotate(40 78 64)" fill="#5F8574" opacity="0.55"/><ellipse cx="84" cy="80" rx="7" ry="5.0" transform="rotate(-10 84 80)" fill="#7FA393" opacity="0.55"/><circle cx="28" cy="4" r="4" fill="#6B7A47" opacity="0.45"/><circle cx="50" cy="26" r="4" fill="#6B7A47" opacity="0.45"/><circle cx="70" cy="48" r="3.5" fill="#6B7A47" opacity="0.45"/><circle cx="90" cy="70" r="3" fill="#6B7A47" opacity="0.45"/><circle cx="40" cy="12" r="1.6" fill="#C8A55A"/><circle cx="62" cy="34" r="1.4" fill="#C8A55A"/><circle cx="80" cy="56" r="1.2" fill="#C8A55A"/></g></svg>
+        <p class="header-eyebrow">The Wedding Of</p>
+        <span class="couple-name">Jerald</span>
+        <span class="couple-amp">&amp;</span>
+        <span class="couple-name">Ronalyn</span>
+        <p class="wedding-date">February 26, 2027</p>
+        <div class="names-rule">
+          <div class="names-rule-line-l"></div>
+          <div class="names-rule-dot"></div>
+          <div class="names-rule-flower">&#10047;</div>
+          <div class="names-rule-dot"></div>
+          <div class="names-rule-line-r"></div>
+        </div>
+        <span class="header-title">RSVP</span>
+      </div>
+
+
+      <div class="tagline-band">
+        <p class="tagline-text">
+          Every seat is reserved with love.<br/>
+          <strong>Please confirm your attendance below.</strong>
+        </p>
+      </div>
+
+      <div class="form-body">
+        <div class="field-group">
+          <label class="field-label" for="guestSearch">Guest Name</label>
+          <input type="text" id="guestSearch" class="field-input"
+            placeholder="Type your first name or full name"
+            autocomplete="off" spellcheck="false" />
+          <div class="status-bar ready" id="statusBar" aria-live="polite">
+            <div class="status-dot"></div>
+            <span id="statusText">Ready &#8212; enter your name above</span>
+          </div>
+          <div class="suggest-box" id="suggestBox" role="list"></div>
+        </div>
+        <div class="rsvp-section" id="rsvpSection"></div>
+      </div>
+
+      <div id="seatPanel" style="display:none;">
+        <div class="seat-panel">
+          <div class="seat-panel-label">Seats Reserved In Your Honor</div>
+          <div class="seat-number" id="seatNumber">&#8212;</div>
+          <div class="seat-sublabel">guest(s) included in this invitation</div>
+        </div>
+        <div class="guest-section">
+          <div class="field-group" style="margin-top:22px;">
+            <label class="field-label">Confirm Attendance</label>
+            <p class="guest-hint">Toggle each name below to mark who will be attending.</p>
+            <div id="guestFields">
+              <div class="guest-field-row show" id="guestRow1">
+                <span class="guest-num">i.</span>
+                <div class="guest-input-wrap"><input type="text" id="guest1" class="field-input" placeholder="Primary Guest" disabled /></div>
+                <label class="attend-toggle" title="Toggle attendance">
+                  <input type="checkbox" id="guestAttend1" checked onchange="toggleGuestAttendance(1)" />
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                  <span class="toggle-label" id="guestAttendLabel1">Attending</span>
+                </label>
+              </div>
+              <div class="guest-field-row" id="guestRow2">
+                <span class="guest-num">ii.</span>
+                <div class="guest-input-wrap"><input type="text" id="guest2" class="field-input" placeholder="Guest 2" /></div>
+                <label class="attend-toggle" title="Toggle attendance">
+                  <input type="checkbox" id="guestAttend2" checked onchange="toggleGuestAttendance(2)" />
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                  <span class="toggle-label" id="guestAttendLabel2">Attending</span>
+                </label>
+              </div>
+              <div class="guest-field-row" id="guestRow3">
+                <span class="guest-num">iii.</span>
+                <div class="guest-input-wrap"><input type="text" id="guest3" class="field-input" placeholder="Guest 3" /></div>
+                <label class="attend-toggle" title="Toggle attendance">
+                  <input type="checkbox" id="guestAttend3" checked onchange="toggleGuestAttendance(3)" />
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                  <span class="toggle-label" id="guestAttendLabel3">Attending</span>
+                </label>
+              </div>
+              <div class="guest-field-row" id="guestRow4">
+                <span class="guest-num">iv.</span>
+                <div class="guest-input-wrap"><input type="text" id="guest4" class="field-input" placeholder="Guest 4" /></div>
+                <label class="attend-toggle" title="Toggle attendance">
+                  <input type="checkbox" id="guestAttend4" checked onchange="toggleGuestAttendance(4)" />
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                  <span class="toggle-label" id="guestAttendLabel4">Attending</span>
+                </label>
+              </div>
+              <div class="guest-field-row" id="guestRow5">
+                <span class="guest-num">v.</span>
+                <div class="guest-input-wrap"><input type="text" id="guest5" class="field-input" placeholder="Guest 5" /></div>
+                <label class="attend-toggle" title="Toggle attendance">
+                  <input type="checkbox" id="guestAttend5" checked onchange="toggleGuestAttendance(5)" />
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                  <span class="toggle-label" id="guestAttendLabel5">Attending</span>
+                </label>
+              </div>
+              <div class="guest-field-row" id="guestRow6">
+                <span class="guest-num">vi.</span>
+                <div class="guest-input-wrap"><input type="text" id="guest6" class="field-input" placeholder="Guest 6" /></div>
+                <label class="attend-toggle" title="Toggle attendance">
+                  <input type="checkbox" id="guestAttend6" checked onchange="toggleGuestAttendance(6)" />
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                  <span class="toggle-label" id="guestAttendLabel6">Attending</span>
+                </label>
+              </div>
+              <div class="guest-field-row" id="guestRow7">
+                <span class="guest-num">vii.</span>
+                <div class="guest-input-wrap"><input type="text" id="guest7" class="field-input" placeholder="Guest 7" /></div>
+                <label class="attend-toggle" title="Toggle attendance">
+                  <input type="checkbox" id="guestAttend7" checked onchange="toggleGuestAttendance(7)" />
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                  <span class="toggle-label" id="guestAttendLabel7">Attending</span>
+                </label>
+              </div>
+              <div class="guest-field-row" id="guestRow8">
+                <span class="guest-num">viii.</span>
+                <div class="guest-input-wrap"><input type="text" id="guest8" class="field-input" placeholder="Guest 8" /></div>
+                <label class="attend-toggle" title="Toggle attendance">
+                  <input type="checkbox" id="guestAttend8" checked onchange="toggleGuestAttendance(8)" />
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                  <span class="toggle-label" id="guestAttendLabel8">Attending</span>
+                </label>
+              </div>
+              <div class="guest-field-row" id="guestRow9">
+                <span class="guest-num">ix.</span>
+                <div class="guest-input-wrap"><input type="text" id="guest9" class="field-input" placeholder="Guest 9" /></div>
+                <label class="attend-toggle" title="Toggle attendance">
+                  <input type="checkbox" id="guestAttend9" checked onchange="toggleGuestAttendance(9)" />
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                  <span class="toggle-label" id="guestAttendLabel9">Attending</span>
+                </label>
+              </div>
+              <div class="guest-field-row" id="guestRow10">
+                <span class="guest-num">x.</span>
+                <div class="guest-input-wrap"><input type="text" id="guest10" class="field-input" placeholder="Guest 10" /></div>
+                <label class="attend-toggle" title="Toggle attendance">
+                  <input type="checkbox" id="guestAttend10" checked onchange="toggleGuestAttendance(10)" />
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                  <span class="toggle-label" id="guestAttendLabel10">Attending</span>
+                </label>
+              </div>
+              <div class="guest-field-row" id="guestRow11">
+                <span class="guest-num">xi.</span>
+                <div class="guest-input-wrap"><input type="text" id="guest11" class="field-input" placeholder="Guest 11" /></div>
+                <label class="attend-toggle" title="Toggle attendance">
+                  <input type="checkbox" id="guestAttend11" checked onchange="toggleGuestAttendance(11)" />
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                  <span class="toggle-label" id="guestAttendLabel11">Attending</span>
+                </label>
+              </div>
+              <div class="guest-field-row" id="guestRow12">
+                <span class="guest-num">xii.</span>
+                <div class="guest-input-wrap"><input type="text" id="guest12" class="field-input" placeholder="Guest 12" /></div>
+                <label class="attend-toggle" title="Toggle attendance">
+                  <input type="checkbox" id="guestAttend12" checked onchange="toggleGuestAttendance(12)" />
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                  <span class="toggle-label" id="guestAttendLabel12">Attending</span>
+                </label>
+              </div>
+              <div class="guest-field-row" id="guestRow13">
+                <span class="guest-num">xiii.</span>
+                <div class="guest-input-wrap"><input type="text" id="guest13" class="field-input" placeholder="Guest 13" /></div>
+                <label class="attend-toggle" title="Toggle attendance">
+                  <input type="checkbox" id="guestAttend13" checked onchange="toggleGuestAttendance(13)" />
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                  <span class="toggle-label" id="guestAttendLabel13">Attending</span>
+                </label>
+              </div>
+              <div class="guest-field-row" id="guestRow14">
+                <span class="guest-num">xiv.</span>
+                <div class="guest-input-wrap"><input type="text" id="guest14" class="field-input" placeholder="Guest 14" /></div>
+                <label class="attend-toggle" title="Toggle attendance">
+                  <input type="checkbox" id="guestAttend14" checked onchange="toggleGuestAttendance(14)" />
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                  <span class="toggle-label" id="guestAttendLabel14">Attending</span>
+                </label>
+              </div>
+              <div class="guest-field-row" id="guestRow15">
+                <span class="guest-num">xv.</span>
+                <div class="guest-input-wrap"><input type="text" id="guest15" class="field-input" placeholder="Guest 15" /></div>
+                <label class="attend-toggle" title="Toggle attendance">
+                  <input type="checkbox" id="guestAttend15" checked onchange="toggleGuestAttendance(15)" />
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                  <span class="toggle-label" id="guestAttendLabel15">Attending</span>
+                </label>
+              </div>
+              <div class="guest-field-row" id="guestRow16">
+                <span class="guest-num">xvi.</span>
+                <div class="guest-input-wrap"><input type="text" id="guest16" class="field-input" placeholder="Guest 16" /></div>
+                <label class="attend-toggle" title="Toggle attendance">
+                  <input type="checkbox" id="guestAttend16" checked onchange="toggleGuestAttendance(16)" />
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                  <span class="toggle-label" id="guestAttendLabel16">Attending</span>
+                </label>
+              </div>
+              <div class="guest-field-row" id="guestRow17">
+                <span class="guest-num">xvii.</span>
+                <div class="guest-input-wrap"><input type="text" id="guest17" class="field-input" placeholder="Guest 17" /></div>
+                <label class="attend-toggle" title="Toggle attendance">
+                  <input type="checkbox" id="guestAttend17" checked onchange="toggleGuestAttendance(17)" />
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                  <span class="toggle-label" id="guestAttendLabel17">Attending</span>
+                </label>
+              </div>
+              <div class="guest-field-row" id="guestRow18">
+                <span class="guest-num">xviii.</span>
+                <div class="guest-input-wrap"><input type="text" id="guest18" class="field-input" placeholder="Guest 18" /></div>
+                <label class="attend-toggle" title="Toggle attendance">
+                  <input type="checkbox" id="guestAttend18" checked onchange="toggleGuestAttendance(18)" />
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                  <span class="toggle-label" id="guestAttendLabel18">Attending</span>
+                </label>
+              </div>
+              <div class="guest-field-row" id="guestRow19">
+                <span class="guest-num">xix.</span>
+                <div class="guest-input-wrap"><input type="text" id="guest19" class="field-input" placeholder="Guest 19" /></div>
+                <label class="attend-toggle" title="Toggle attendance">
+                  <input type="checkbox" id="guestAttend19" checked onchange="toggleGuestAttendance(19)" />
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                  <span class="toggle-label" id="guestAttendLabel19">Attending</span>
+                </label>
+              </div>
+              <div class="guest-field-row" id="guestRow20">
+                <span class="guest-num">xx.</span>
+                <div class="guest-input-wrap"><input type="text" id="guest20" class="field-input" placeholder="Guest 20" /></div>
+                <label class="attend-toggle" title="Toggle attendance">
+                  <input type="checkbox" id="guestAttend20" checked onchange="toggleGuestAttendance(20)" />
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                  <span class="toggle-label" id="guestAttendLabel20">Attending</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="message-group">
+          <label class="field-label" for="coupleMessage">Message to the Couple <span class="optional-tag">(optional)</span></label>
+          <textarea id="coupleMessage" class="message-input" maxlength="500"
+            placeholder="Share your wishes, a favorite memory, or a few words of love…"></textarea>
+          <div class="message-count"><span id="messageCount">0</span> / 500</div>
+        </div>
+        <div class="btn-wrap">
+          <button class="btn-submit" id="submitBtn" onclick="submitRSVP()">
+            <span class="btn-spinner"></span>
+            <span id="submitBtnText">Confirm RSVP</span>
+          </button>
+        </div>
+      </div>
+      <br>
+      <!-- RSVP DEADLINE -->
+      <div class="deadline-band">
+        <span class="deadline-label">RSVP Deadline</span>
+        <span class="deadline-date">January 26, 2027</span>
+      </div>
+
+      <div class="note-section">
+        <p>Only guests with a <strong>confirmed RSVP</strong> will be accommodated at the celebration. We kindly ask that you refer to the names listed on your invitation.</p>
+        <p><strong>STRICTLY NO PLUS ONE.</strong><br/>Thank you for your kind understanding.</p>
+      </div>
+      <div class="page-footer">
+        <p>Jerald &amp; Ronalyn &#8212; with love</p>
+      </div>
+    </div></div></div>
+  </div>
+
+
+  <!-- ══ CONFIRMATION MODAL ══ -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modalBox">
+      <div class="modal-accent"></div>
+      <div class="modal-scroll">
+        <div class="modal-header">
+          <div class="modal-names">Jerald<span class="modal-amp">&amp;</span>Ronalyn</div>
+          <span class="modal-tagline">with love &amp; gratitude &middot; 02.26.2027</span>
+        </div>
+        <div class="modal-body">
+          <h2 class="modal-title">Thank You</h2>
+          <p class="modal-message" id="modalMessage">
+            Your response has been received.<br>
+            We&rsquo;re so happy to celebrate our special day with you.
+          </p>
+          <div class="summary-card" id="summaryCard"></div>
+          <div class="modal-actions">
+            <button class="btn-modal-close" onclick="closeModal()">Back to RSVP</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ============================================================
+       Vercel backend bridge — same call style as google.script.run:
+       server.run.withSuccessHandler(fn).withFailureHandler(fn).someFunction(args)
+       Every call is a POST to /api/rpc (see api/rpc.js).
+    ============================================================ */
+    var server = {
+      get run() {
+        var ok = null, fail = null, runner;
+        runner = new Proxy({}, { get: function (_, fnName) {
+          if (fnName === 'withSuccessHandler') return function (f) { ok = f; return runner; };
+          if (fnName === 'withFailureHandler') return function (f) { fail = f; return runner; };
+          return function () {
+            var args = Array.prototype.slice.call(arguments);
+            var headers = { 'Content-Type': 'application/json' };
+            var token = null;
+            try { token = sessionStorage.getItem('rsvpAdminToken'); } catch (e) {}
+            if (token) headers['x-admin-token'] = token;
+            fetch('/api/rpc', { method: 'POST', headers: headers, body: JSON.stringify({ fn: fnName, args: args }) })
+              .then(function (res) {
+                return res.json().catch(function () {
+              return { message: 'The server returned an unexpected response (HTTP ' + res.status + ').' };
+            }).then(function (body) {
+                  if (res.status === 401 && body.authError && window.onAdminAuthExpired) { window.onAdminAuthExpired(body.message); return; }
+                  if (!res.ok) throw new Error(body.message || ('HTTP ' + res.status));
+                  if (ok) ok(body);
+                });
+              })
+              .catch(function (err) { if (fail) fail(err); });
+          };
+        }});
+        return runner;
+      }
+    };
+    
+    var MAX_GUESTS = 20;
+    var currentGuestData = null;
+    var searchTimer = null;
+
+    var searchInput = document.getElementById('guestSearch');
+    var statusBar   = document.getElementById('statusBar');
+    var statusText  = document.getElementById('statusText');
+    var seatPanel   = document.getElementById('seatPanel');
+    var seatNumber  = document.getElementById('seatNumber');
+    var suggestBox  = document.getElementById('suggestBox');
+
+    function setStatus(msg, cls) {
+      statusText.textContent = msg;
+      statusBar.className = 'status-bar' + (cls ? ' ' + cls : '');
+    }
+
+    function esc(s) {
+      return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+        return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+      });
+    }
+
+    /* ---------- "Did you mean" suggestions ---------- */
+    function showSuggestions(list) {
+      suggestBox.innerHTML = '';
+      list.forEach(function (name) {
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'suggest-btn';
+        btn.setAttribute('role', 'listitem');
+        btn.innerHTML = '<span class="suggest-name">' + esc(name) + '</span><span class="suggest-go">This is me &rsaquo;</span>';
+        btn.addEventListener('click', function () { pickSuggestion(name); });
+        suggestBox.appendChild(btn);
+      });
+      suggestBox.classList.add('visible');
+    }
+
+    function hideSuggestions() {
+      suggestBox.classList.remove('visible');
+      suggestBox.innerHTML = '';
+    }
+
+    function pickSuggestion(name) {
+      clearTimeout(searchTimer);
+      searchInput.value = name;
+      hideSuggestions();
+      seatPanel.style.display = 'none';
+      currentGuestData = null;
+      setStatus('Opening your invitation…');
+      lookupGuest(name);
+    }
+
+    var messageInput = document.getElementById('coupleMessage');
+    messageInput.addEventListener('input', function () {
+      document.getElementById('messageCount').textContent = messageInput.value.length;
+    });
+
+    function resetGuestRows() {
+      for (var i = 2; i <= MAX_GUESTS; i++) {
+        var row = document.getElementById('guestRow' + i);
+        if (row) row.classList.remove('show');
+        var input = document.getElementById('guest' + i);
+        if (input) input.value = '';
+        resetToggle(i);
+      }
+      resetToggle(1);
+    }
+
+    function resetToggle(i) {
+      var cb = document.getElementById('guestAttend' + i);
+      var lbl = document.getElementById('guestAttendLabel' + i);
+      if (cb) cb.checked = true;
+      if (lbl) lbl.textContent = 'Attending';
+    }
+
+    function toggleGuestAttendance(i) {
+      var cb = document.getElementById('guestAttend' + i);
+      var lbl = document.getElementById('guestAttendLabel' + i);
+      if (cb && lbl) lbl.textContent = cb.checked ? 'Attending' : 'Not Attending';
+    }
+
+    searchInput.addEventListener('input', function () {
+      clearTimeout(searchTimer);
+      var name = searchInput.value.trim();
+      seatPanel.style.display = 'none';
+      currentGuestData = null;
+      hideSuggestions();
+
+      if (!name) { setStatus('Ready — enter your name above'); return; }
+
+      setStatus('Searching guest list…');
+      searchTimer = setTimeout(function () { lookupGuest(name); }, 500);
+    });
+
+    function lookupGuest(name) {
+      server.run
+        .withSuccessHandler(function (res) { onLookupResult(res, name); })
+        .withFailureHandler(function () { setStatus('An error occurred while searching. Please try again.', 'error'); })
+        .getGuestData(name);
+    }
+
+    function onLookupResult(res, typedName) {
+      if (searchInput.value.trim() !== typedName) return; // stale response
+      hideSuggestions();
+
+      if (res && res.closed) {
+        setStatus(res.message || 'RSVPs are now closed.', 'error');
+        return;
+      }
+      if (res && !res.found && res.suggestions && res.suggestions.length) {
+        setStatus(res.suggestions.length === 1 ? 'Did you mean this name?' : 'Did you mean one of these names?', 'suggest');
+        showSuggestions(res.suggestions);
+        return;
+      }
+      if (!res || !res.found) {
+        setStatus('We couldn’t find that name — please check the spelling on your invitation.', 'error');
+        return;
+      }
+      if (res.alreadySubmitted) {
+        setStatus('An RSVP has already been submitted for ' + res.name + '.', 'error');
+        return;
+      }
+
+      currentGuestData = res;
+      setStatus('Invitation found — welcome, ' + res.name + '.', 'found');
+      seatNumber.textContent = res.seat;
+      seatPanel.style.display = 'block';
+      resetGuestRows();
+
+      document.getElementById('guest1').value = res.name;
+      for (var i = 2; i <= res.seat; i++) {
+        var row = document.getElementById('guestRow' + i);
+        if (row) row.classList.add('show');
+      }
+    }
+
+    function submitRSVP() {
+      if (!currentGuestData) return;
+      var btn = document.getElementById('submitBtn');
+      var btnText = document.getElementById('submitBtnText');
+      btn.disabled = true; btn.classList.add('loading'); btnText.textContent = 'Submitting…';
+
+      var mainCb = document.getElementById('guestAttend1');
+      var mainStatus = (mainCb && mainCb.checked) ? 'Joyfully Accepts' : 'Regretfully Declines';
+
+      var coupleMessage = document.getElementById('coupleMessage').value.trim().slice(0, 500);
+      var payload = {
+        action: 'submit',
+        name: currentGuestData.name,
+        mainStatus: mainStatus,
+        totalSeat: currentGuestData.seat,
+        message: coupleMessage
+      };
+
+      for (var i = 2; i <= currentGuestData.seat; i++) {
+        var input = document.getElementById('guest' + i);
+        var cb = document.getElementById('guestAttend' + i);
+        var gName = input ? input.value.trim() : '';
+        var gStatus = (cb && cb.checked) ? 'Joyfully Accepts' : 'Regretfully Declines';
+        payload['guest' + i] = gName;
+        payload['status' + i] = gStatus;
+      }
+
+      var attendingNames = [];
+      if (mainStatus === 'Joyfully Accepts') attendingNames.push(currentGuestData.name);
+      for (var k = 2; k <= currentGuestData.seat; k++) {
+        if (payload['guest' + k] && payload['status' + k] === 'Joyfully Accepts') attendingNames.push(payload['guest' + k]);
+      }
+      var summary = {
+        name: currentGuestData.name,
+        attendance: attendingNames.length ? 'Joyfully Accepts' : 'Regretfully Declines',
+        seatCount: attendingNames.length,
+        guestNames: attendingNames,
+        message: coupleMessage
+      };
+
+      server.run
+        .withSuccessHandler(function (res) {
+          btn.disabled = false; btn.classList.remove('loading'); btnText.textContent = 'Confirm RSVP';
+          if (res && res.success) {
+            showModal(res.message, summary);
+          } else {
+            setStatus((res && res.message) || 'Submission failed. Please try again.', 'error');
+          }
+        })
+        .withFailureHandler(function () {
+          btn.disabled = false; btn.classList.remove('loading'); btnText.textContent = 'Confirm RSVP';
+          setStatus('An error occurred while submitting. Please try again.', 'error');
+        })
+        .submitForm(payload);
+    }
+
+    function showModal(msg, summary) {
+      document.getElementById('modalMessage').innerHTML = 'Your response has been received.<br>' + esc(msg || 'We’re so happy to celebrate our special day with you.');
+      summary = summary || {};
+      var isAccept = summary.attendance === 'Joyfully Accepts';
+      var badge = '<span class="summary-badge ' + (isAccept ? 'accept' : 'decline') + '">' + (isAccept ? 'Joyfully Accepts' : 'Regretfully Declines') + '</span>';
+      var namesHtml = (summary.guestNames && summary.guestNames.length)
+        ? '<ul class="summary-names">' + summary.guestNames.map(function (n) { return '<li>' + esc(n) + '</li>'; }).join('') + '</ul>'
+        : '<span class="summary-value">—</span>';
+      document.getElementById('summaryCard').innerHTML =
+        '<div class="summary-row"><span class="summary-label">Guest</span><span class="summary-value">' + esc(summary.name || '') + '</span></div>' +
+        '<div class="summary-row"><span class="summary-label">Response</span>' + badge + '</div>' +
+        '<div class="summary-row"><span class="summary-label">Attending</span><span class="summary-value">' + (summary.seatCount || 0) + '</span></div>' +
+        '<div class="summary-row"><span class="summary-label">Guest Name(s)</span>' + namesHtml + '</div>' +
+        (summary.message ? '<div class="summary-row"><span class="summary-label">Your Message</span><span class="summary-message">' + esc(summary.message) + '</span></div>' : '');
+      document.getElementById('modalOverlay').classList.add('active');
+    }
+
+    /* "Back to RSVP" returns guests to a fresh RSVP form */
+    function closeModal() {
+      document.getElementById('modalOverlay').classList.remove('active');
+      setTimeout(function () { window.location.reload(); }, 400);
+    }
+    document.getElementById('modalOverlay').addEventListener('click', function (e) { if (e.target === this) closeModal(); });
+  </script>
+
+
+
+</body>
+</html>

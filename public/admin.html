@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>RSVP Admin — Jerald &amp; Ronalyn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Cormorant+Garamond:ital,wght@1,500;1,600&family=Jost:wght@300;400;700&family=Pinyon+Script&display=swap" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+:root{
+  /* Greenery (Jerald & Ronalyn) — moss green, eucalyptus green, white & a touch of gold — mapped onto the admin theme */
+  --nv-dk:#283222; --nv:#4A5A34; --nv-mid:#5C6B3A; --nv-lt:#FBFBF8;
+  --gd:#FDFDFB; --gd-dk:#E8D7A8; --gd-lt:#ffffff; --gd-pale:#EEF2EC;
+  --wh-off:#FFFFFF;
+  --ink:#FDFDFB; --ink-soft:rgba(250,247,240,0.92); --ink-mute:rgba(250,247,240,0.58);
+  --card:#FDFDFB; --card-deep:#E8EDE6; --card-blush:#FDFBF6;
+  --bg:#F2F4EE;
+  --olive:#5F8574; --olive-dk:#4F7262; --khaki:#D6BC7E; --khaki-lt:#F3EAD3;
+  --good:#5F8574; --bad:#A4473C; --warn:#8C6D33;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  min-height:100vh; font-family:'Jost',sans-serif; font-weight:300; background:var(--bg); color:var(--nv-dk);
+}
+::selection{ background:var(--gd-dk); color:var(--nv-dk); }
+a{ color:inherit; }
+
+/* ===== LOGIN — Greenery ===== */
+#loginScreen{
+  min-height:100vh; display:flex; align-items:center; justify-content:center; padding:32px 20px; position:relative; overflow:hidden;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, #FFFFFF 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 100% 100%, rgba(95,133,116,0.10) 0%, transparent 60%),
+    radial-gradient(ellipse 55% 45% at 0% 100%, rgba(110,145,130,0.28) 0%, transparent 60%),
+    linear-gradient(180deg, #FDFDFB 0%, #F2F4EE 100%);
+}
+.login-card{ width:100%; max-width:420px; position:relative; z-index:1; }
+.login-frame{
+  background:#FFFDF8; border-radius:22px; padding:10px;
+  box-shadow:0 30px 80px rgba(40,50,34,0.14), 0 6px 18px rgba(40,50,34,0.06);
+  border:1px solid rgba(200,165,90,0.35);
+}
+.login-inner{
+  border:1px solid rgba(200,165,90,0.45); border-radius:15px;
+  padding:42px 38px 34px; text-align:center; position:relative;
+}
+.login-inner::before{ content:''; position:absolute; inset:5px; border:1px solid rgba(200,165,90,0.18); border-radius:11px; pointer-events:none; }
+.login-sprig{ width:88px; height:auto; display:block; margin:0 auto 18px; }
+.login-eyebrow{ display:block; font-size:10px; font-weight:400; letter-spacing:0.46em; text-indent:0.46em; text-transform:uppercase; color:#5F8574; }
+.login-title{ font-family:'Pinyon Script',cursive; font-weight:400; font-size:clamp(30px,8vw,38px); line-height:1.25; color:#4A5A34; margin:14px 0 2px; padding:0 0.1em 0.12em; }
+.login-title .amp{ display:block; font-size:0.62em; color:#C8A55A; line-height:1; margin:2px 0; }
+.login-rule{ display:flex; align-items:center; gap:10px; margin:14px auto 12px; max-width:200px; }
+.login-rule span{ flex:1; height:1px; background:linear-gradient(90deg,transparent,rgba(200,165,90,0.8)); }
+.login-rule span:last-child{ background:linear-gradient(90deg,rgba(200,165,90,0.8),transparent); }
+.login-rule i{ width:6px; height:6px; transform:rotate(45deg); border:1px solid #C8A55A; flex-shrink:0; }
+.login-sub{ font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:500; font-size:16px; color:rgba(47,59,42,0.72); margin-bottom:28px; }
+.login-field{ text-align:left; }
+.login-label{ display:block; font-size:9.5px; font-weight:400; letter-spacing:0.32em; text-transform:uppercase; color:rgba(47,59,42,0.62); margin-bottom:8px; }
+.login-input-wrap{ position:relative; }
+.login-input{
+  width:100%; padding:13px 64px 13px 16px; background:#FDFDFB; border:1px solid rgba(47,59,42,0.20); border-radius:10px;
+  color:#283222; font-family:'Jost',sans-serif; font-weight:400; font-size:15px; outline:none; letter-spacing:0.06em;
+  transition:border-color .2s ease, box-shadow .2s ease, background .2s ease;
+}
+.login-input:focus{ border-color:#5F8574; background:#FFFFFF; box-shadow:0 0 0 3px rgba(95,133,116,0.14); }
+.login-input::placeholder{ color:rgba(47,59,42,0.42); letter-spacing:0.02em; }
+.login-reveal{
+  position:absolute; right:8px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer;
+  font-family:'Jost',sans-serif; font-size:10px; font-weight:400; letter-spacing:0.16em; text-transform:uppercase;
+  color:rgba(47,59,42,0.6); padding:8px; border-radius:6px;
+}
+.login-reveal:hover{ color:#4A5A34; }
+.login-reveal:focus-visible, .login-btn:focus-visible{ outline:2px solid #5F8574; outline-offset:2px; }
+.login-btn{
+  width:100%; margin-top:18px; padding:15px; background:#4A5A34; border:1px solid #4A5A34; border-radius:10px; cursor:pointer;
+  font-family:'Jost',sans-serif; font-size:11px; font-weight:400; letter-spacing:0.36em; text-indent:0.36em; text-transform:uppercase;
+  color:#FDFDFB; transition:background .2s ease, border-color .2s ease;
+}
+.login-btn:hover{ background:#283222; border-color:#283222; }
+.login-btn:disabled{ opacity:0.6; cursor:wait; }
+.login-err{ margin-top:14px; font-size:13px; color:#A4473C; font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:600; min-height:18px; }
+.login-foot{ margin-top:18px; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:13px; color:rgba(47,59,42,0.5); }
+@media (max-width:420px){ .login-inner{ padding:34px 22px 28px; } }
+
+/* ===== SHELL ===== */
+#adminShell{ display:none; min-height:100vh; }
+.sidebar{
+  width:250px; flex-shrink:0; background:linear-gradient(180deg,var(--nv-mid),var(--nv) 40%,var(--nv-dk));
+  color:var(--gd); min-height:100vh; position:fixed; top:0; left:0; z-index:200; padding:28px 0;
+  border-right:1px solid rgba(255,255,255,0.2); transition:transform .25s ease;
+}
+.sidebar-brand{ padding:0 24px 22px; border-bottom:1px solid rgba(255,255,255,0.2); margin-bottom:14px; }
+.sidebar-brand .sb-names{ font-family:'Playfair Display',serif; font-style:italic; font-weight:900; font-size:20px; line-height:1.1; color:var(--gd); }
+.sidebar-brand .sb-tag{ font-size:8px; font-weight:700; letter-spacing:0.3em; text-transform:uppercase; color:var(--ink-mute); margin-top:4px; display:block; }
+.nav-item{
+  display:flex; align-items:center; gap:12px; padding:12px 24px; cursor:pointer; font-size:12px; font-weight:700;
+  letter-spacing:0.08em; color:var(--ink-soft); border-left:3px solid transparent; transition:.15s ease;
+}
+.nav-item:hover{ background:rgba(255,255,255,0.08); color:var(--gd); }
+.nav-item.active{ background:rgba(255,255,255,0.14); color:var(--gd); border-left-color:var(--gd); }
+.nav-icon{ width:16px; text-align:center; opacity:0.85; }
+.sidebar-foot{ position:absolute; bottom:0; left:0; right:0; padding:16px 24px; border-top:1px solid rgba(255,255,255,0.16); }
+.logout-link{ font-size:11px; font-weight:700; letter-spacing:0.1em; color:var(--ink-mute); cursor:pointer; }
+.logout-link:hover{ color:var(--bad); }
+
+.main{ margin-left:250px; padding:32px 36px 60px; min-height:100vh; }
+.topbar{ display:flex; align-items:center; justify-content:space-between; margin-bottom:26px; flex-wrap:wrap; gap:12px; }
+.page-title{ font-family:'Playfair Display',serif; font-style:italic; font-weight:700; font-size:22px; letter-spacing:0.01em; color:var(--nv-mid); }
+.page-sub{ font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:500; font-size:13.5px; color:rgba(47,59,42,0.7); margin-top:2px; }
+.hamburger{ display:none; width:36px; height:36px; border:1px solid rgba(47,59,42,0.2); background:var(--wh-off); cursor:pointer; align-items:center; justify-content:center; font-size:16px; }
+.topbar-actions{ display:flex; align-items:center; gap:10px; }
+.updated-tag{ font-size:11px; color:rgba(47,59,42,0.45); white-space:nowrap; }
+.refresh-btn{ padding:9px 18px; background:var(--nv-mid); color:var(--gd); border:1px solid rgba(255,255,255,0.4); font-size:10px; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; cursor:pointer; transition:.15s ease; white-space:nowrap; }
+.refresh-btn:hover{ background:var(--nv-dk); }
+
+.view{ display:none; }
+.view.active{ display:block; }
+
+/* ===== STAT CARDS ===== */
+.stat-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:20px; }
+.stat-card{
+  background:var(--wh-off); border:1px solid rgba(47,59,42,0.14); border-left:4px solid var(--nv-mid);
+  padding:18px 20px; transition:.18s ease; position:relative; cursor:pointer;
+}
+.stat-card:hover{ box-shadow:0 8px 20px rgba(47,59,42,0.08); }
+.stat-card .stat-icon{ font-size:18px; display:block; margin-bottom:10px; line-height:1; }
+.stat-card .stat-label{ font-size:9.5px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:rgba(47,59,42,0.5); }
+.stat-card .stat-num{ font-family:'Playfair Display',serif; font-style:italic; font-weight:700; font-size:30px; margin-top:8px; color:var(--nv-dk); }
+.stat-card.good{ border-left-color:var(--good); }
+.stat-card.good .stat-num{ color:var(--good); }
+.stat-card.bad{ border-left-color:var(--bad); }
+.stat-card.bad .stat-num{ color:var(--bad); }
+.stat-card.warn{ border-left-color:var(--warn); }
+.stat-card.warn .stat-num{ color:var(--warn); }
+
+.rsvp-flag{
+  display:inline-flex; align-items:center; gap:6px; padding:6px 14px; font-size:10px; font-weight:700;
+  letter-spacing:0.1em; text-transform:uppercase; margin-bottom:18px; border:1px solid;
+}
+.rsvp-flag.on{ color:var(--good); border-color:var(--good); background:rgba(79,114,98,0.08); }
+.rsvp-flag.off{ color:var(--bad); border-color:var(--bad); background:rgba(163,78,78,0.08); }
+.flag-dot{ width:6px; height:6px; border-radius:50%; background:currentColor; }
+
+/* ===== PANELS (RSVP Status / Response Progress) ===== */
+.panels-grid{ display:grid; grid-template-columns:1.3fr 1fr; gap:16px; margin-bottom:30px; }
+.panel{ background:var(--wh-off); border:1px solid rgba(47,59,42,0.16); padding:22px 24px; }
+.panel-title{ font-family:'Playfair Display',serif; font-style:italic; font-weight:700; font-size:15px; color:var(--nv-mid); margin-bottom:16px; }
+.bar-row{ display:flex; align-items:center; gap:10px; margin-bottom:13px; }
+.bar-row:last-child{ margin-bottom:0; }
+.bar-label{ width:64px; flex-shrink:0; font-size:12px; color:rgba(47,59,42,0.6); }
+.bar-track{ flex:1; height:8px; background:rgba(47,59,42,0.08); position:relative; overflow:hidden; }
+.bar-fill{ height:100%; background:var(--nv-mid); transition:width .5s ease; border-radius:0; }
+.bar-fill.good{ background:var(--good); }
+.bar-fill.bad{ background:var(--bad); }
+.bar-fill.warn{ background:var(--warn); }
+.bar-value{ width:28px; text-align:right; font-size:12px; font-weight:700; color:var(--nv-dk); flex-shrink:0; }
+.progress-caption{ font-size:12.5px; color:rgba(47,59,42,0.6); margin-bottom:10px; }
+
+/* ===== TOOLBAR / TABLE ===== */
+.toolbar{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:16px; }
+.search-box{ flex:1; min-width:200px; padding:10px 14px; border:1px solid rgba(47,59,42,0.24); background:var(--wh-off); font-family:'Jost',sans-serif; font-weight:300; font-size:13px; outline:none; }
+.search-box:focus{ border-color:var(--nv-mid); }
+.btn{ padding:10px 18px; border:1px solid var(--nv-mid); background:var(--nv-mid); color:var(--gd); font-size:10.5px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; cursor:pointer; transition:.15s ease; white-space:nowrap; }
+.btn:hover{ background:var(--nv-dk); }
+.btn.outline{ background:transparent; color:var(--nv-mid); }
+.btn.outline:hover{ background:var(--nv-mid); color:var(--gd); }
+.btn.danger{ border-color:#a34e4e; background:#a34e4e; color:#fff; }
+.btn.danger:hover{ background:#833d3d; }
+.btn:disabled{ opacity:0.4; cursor:not-allowed; }
+.bulk-bar{ display:none; align-items:center; gap:12px; background:var(--nv-mid); color:var(--gd); padding:10px 16px; margin-bottom:12px; font-size:12px; font-weight:700; }
+.bulk-bar.show{ display:flex; }
+
+.table-wrap{ background:var(--wh-off); border:1px solid rgba(47,59,42,0.18); overflow-x:auto; }
+table{ width:100%; border-collapse:collapse; font-size:13px; min-width:520px; }
+thead th{ text-align:left; padding:12px 14px; background:var(--nv-mid); color:var(--gd); font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; white-space:nowrap; }
+tbody td{ padding:12px 14px; border-bottom:1px solid rgba(47,59,42,0.08); vertical-align:middle; }
+tbody tr:hover{ background:rgba(240,240,240,0.7); }
+.badge{ display:inline-block; padding:4px 10px; font-size:10px; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; white-space:nowrap; }
+.badge.accept{ background:rgba(79,114,98,0.15); color:#3E5A4D; }
+.badge.decline{ background:rgba(163,78,78,0.15); color:#7d3b3b; }
+.row-actions{ display:flex; gap:8px; }
+.icon-btn{ width:28px; height:28px; border:1px solid rgba(47,59,42,0.2); background:var(--wh-off); cursor:pointer; font-size:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.icon-btn:hover{ background:var(--nv-mid); color:var(--gd); border-color:var(--nv-mid); }
+.icon-btn.del:hover{ background:#a34e4e; border-color:#a34e4e; color:#fff; }
+.empty-state{ text-align:center; padding:50px 20px; color:rgba(47,59,42,0.55); font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:500; font-size:16px; }
+
+.pagination{ display:flex; align-items:center; justify-content:space-between; margin-top:14px; font-size:12px; color:rgba(47,59,42,0.6); flex-wrap:wrap; gap:10px; }
+.pg-btns{ display:flex; gap:6px; }
+.pg-btns button{ width:30px; height:30px; border:1px solid rgba(47,59,42,0.2); background:var(--wh-off); cursor:pointer; }
+.pg-btns button.active{ background:var(--nv-mid); color:var(--gd); border-color:var(--nv-mid); }
+.pg-btns button:disabled{ opacity:0.4; cursor:not-allowed; }
+
+.select-all-row{ display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+.select-all-row label{ font-size:11px; color:rgba(47,59,42,0.55); cursor:pointer; }
+
+/* ===== RESPONSE CARDS (main guest + companions, each with own status) ===== */
+.resp-list{ display:flex; flex-direction:column; gap:12px; }
+.resp-card{ background:var(--wh-off); border:1px solid rgba(47,59,42,0.18); padding:16px 18px; cursor:pointer; transition:.15s ease; }
+.resp-card:hover{ border-color:var(--nv-mid); box-shadow:0 6px 16px rgba(47,59,42,0.06); }
+.resp-card-top{ display:flex; align-items:center; gap:12px; }
+.resp-card-top input[type="checkbox"]{ flex-shrink:0; }
+.resp-card-main{ flex:1; min-width:0; }
+.resp-card-name{ font-family:'Playfair Display',serif; font-style:italic; font-weight:700; font-size:15px; color:var(--nv-dk); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.resp-card-meta{ font-size:11px; color:rgba(47,59,42,0.5); margin-top:2px; }
+.resp-card-companions{ display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; padding-top:12px; border-top:1px dashed rgba(47,59,42,0.14); }
+.companion-chip{ font-size:11.5px; padding:4px 10px; display:inline-flex; gap:5px; align-items:center; }
+.companion-chip.accept{ background:rgba(79,114,98,0.13); color:#3E5A4D; }
+.companion-chip.decline{ background:rgba(163,78,78,0.13); color:#7d3b3b; }
+.companion-chip em{ font-style:normal; opacity:0.7; }
+.resp-card-message{ margin-top:12px; padding:10px 14px; background:var(--card); border-left:3px solid var(--olive); font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:500; font-size:14.5px; line-height:1.55; color:var(--nv-dk); white-space:pre-wrap; word-break:break-word; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+.resp-card-message::before{ content:'\201C'; color:var(--olive); font-size:20px; line-height:0; margin-right:2px; vertical-align:-4px; }
+.msg-block{ padding:12px 14px; background:var(--card); border-left:3px solid var(--olive); font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:500; font-size:15.5px; line-height:1.6; color:var(--nv-dk); white-space:pre-wrap; word-break:break-word; }
+.msg-tag{ font-size:10px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--olive-dk); margin-left:8px; }
+.no-companions{ font-family:'Cormorant Garamond',serif; font-style:italic; font-size:12.5px; color:rgba(47,59,42,0.4); margin-top:10px; }
+
+/* ===== MODAL ===== */
+.overlay{ position:fixed; inset:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(6px); display:flex; align-items:center; justify-content:center; z-index:600; padding:20px; opacity:0; pointer-events:none; transition:opacity .2s ease; }
+.overlay.active{ opacity:1; pointer-events:all; }
+.modal-box{ width:100%; max-width:420px; max-height:88vh; overflow-y:auto; background:var(--wh-off); border-top:4px solid var(--nv-mid); box-shadow:0 30px 80px rgba(47,59,42,0.4); }
+.modal-hd{ padding:20px 26px; border-bottom:1px solid rgba(47,59,42,0.1); display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; background:var(--wh-off); }
+.modal-hd h3{ font-family:'Playfair Display',serif; font-style:italic; font-weight:700; font-size:17px; letter-spacing:0.01em; color:var(--nv-mid); }
+.modal-close{ cursor:pointer; font-size:18px; color:rgba(47,59,42,0.5); }
+.modal-bd{ padding:22px 26px; }
+.field{ margin-bottom:16px; }
+.field label{ display:block; font-size:9.5px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:rgba(47,59,42,0.55); margin-bottom:6px; }
+.field input, .field select{ width:100%; padding:10px 12px; border:1px solid rgba(47,59,42,0.24); font-family:'Jost',sans-serif; font-weight:300; font-size:14px; outline:none; }
+.field input:focus, .field select:focus{ border-color:var(--nv-mid); }
+.modal-ft{ padding:16px 26px 22px; display:flex; gap:10px; justify-content:flex-end; }
+.guest-name-list{ list-style:none; font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:500; font-size:15px; }
+.guest-name-list li{ padding:6px 0; border-bottom:1px dashed rgba(47,59,42,0.12); display:flex; align-items:center; justify-content:space-between; gap:10px; }
+
+.stat-list{ list-style:none; max-height:52vh; overflow-y:auto; }
+.stat-list li{ display:flex; align-items:flex-start; justify-content:space-between; gap:10px; padding:10px 0; border-bottom:1px dashed rgba(47,59,42,0.12); }
+.stat-list li:last-child{ border-bottom:none; }
+.stat-list .sl-name{ font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:500; font-size:14.5px; color:var(--nv-dk); }
+.stat-list .sl-sub{ display:block; font-family:'Jost',sans-serif; font-style:normal; font-size:11px; color:rgba(47,59,42,0.48); margin-top:2px; }
+
+/* ===== IMPORT DROPZONE ===== */
+.dropzone{ border:1px dashed rgba(47,59,42,0.35); padding:30px 20px; text-align:center; cursor:pointer; background:rgba(240,240,240,0.6); }
+.dropzone.drag{ border-color:var(--nv-mid); background:rgba(168,132,31,0.25); }
+.dropzone p{ font-size:13px; color:rgba(47,59,42,0.6); }
+.dropzone span{ font-weight:700; color:var(--nv-mid); }
+
+.toast{ position:fixed; bottom:24px; right:24px; background:var(--nv-mid); color:var(--gd); padding:14px 22px; font-size:13px; font-weight:700; z-index:900; box-shadow:0 10px 30px rgba(47,59,42,0.3); transform:translateY(20px); opacity:0; pointer-events:none; transition:.25s ease; max-width:80vw; }
+.toast.show{ transform:translateY(0); opacity:1; }
+.toast.err{ background:#a34e4e; }
+
+.section-title{ font-family:'Jost',sans-serif; font-weight:400; font-size:13px; letter-spacing:0.14em; color:var(--nv-mid); margin:8px 0 14px; text-transform:uppercase; }
+.settings-card{ background:var(--wh-off); border:1px solid rgba(47,59,42,0.18); padding:24px; max-width:520px; margin-bottom:20px; }
+.toggle-row{ display:flex; align-items:center; justify-content:space-between; }
+.switch{ position:relative; width:46px; height:24px; background:rgba(47,59,42,0.2); cursor:pointer; flex-shrink:0; }
+.switch.on{ background:var(--good); }
+.switch::after{ content:''; position:absolute; width:18px; height:18px; background:#fff; top:3px; left:3px; transition:.2s ease; }
+.switch.on::after{ left:25px; }
+.hint{ font-size:11.5px; color:rgba(47,59,42,0.5); margin-top:10px; line-height:1.6; }
+.pw-form .field{ margin-bottom:14px; }
+.pw-form .field input{ border-radius:8px; }
+.pw-actions{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-top:4px; }
+.pw-msg{ font-size:12.5px; font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:600; min-height:16px; }
+.pw-msg.err{ color:var(--bad); }
+.pw-msg.ok{ color:var(--good); }
+.pw-show{ font-size:11px; color:rgba(47,59,42,0.6); display:flex; align-items:center; gap:6px; cursor:pointer; margin-bottom:14px; }
+
+.overlay-backdrop-mobile{ display:none; }
+
+@media (max-width:900px){
+  .stat-grid{ grid-template-columns:repeat(2,1fr); }
+  .sidebar{ transform:translateX(-100%); }
+  .sidebar.open{ transform:translateX(0); }
+  .main{ margin-left:0; padding:22px 18px 60px; }
+  .hamburger{ display:flex; }
+  .overlay-backdrop-mobile.open{ display:block; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:150; }
+}
+@media (max-width:800px){
+  .panels-grid{ grid-template-columns:1fr; }
+}
+@media (max-width:520px){
+  table{ min-width:460px; }
+  .resp-card-meta{ display:block; }
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-frame">
+      <div class="login-inner">
+        <svg class="login-sprig" viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M8 22 C 36 22, 84 22, 112 22" stroke="#C8A55A" stroke-width="1" fill="none"/>
+          <g fill="#5F8574" opacity="0.9">
+            <ellipse cx="42" cy="15" rx="7" ry="2.6" transform="rotate(-28 42 15)"/>
+            <ellipse cx="52" cy="29" rx="7" ry="2.6" transform="rotate(28 52 29)"/>
+            <ellipse cx="78" cy="15" rx="7" ry="2.6" transform="rotate(28 78 15)"/>
+            <ellipse cx="68" cy="29" rx="7" ry="2.6" transform="rotate(-28 68 29)"/>
+          </g>
+          <circle cx="60" cy="22" r="3.2" fill="#4A5A34"/>
+          <circle cx="60" cy="22" r="6" fill="none" stroke="#C8A55A" stroke-width="0.8"/>
+        </svg>
+        <span class="login-eyebrow">Private Access</span>
+        <div class="login-title">Jerald<span class="amp">&amp;</span>Ronalyn</div>
+        <div class="login-rule"><span></span><i></i><span></span></div>
+        <p class="login-sub">RSVP Management &middot; February 26, 2027</p>
+        <div class="login-field">
+          <label class="login-label" for="loginPass">Admin Password</label>
+          <div class="login-input-wrap">
+            <input type="password" id="loginPass" class="login-input" placeholder="Enter password" autocomplete="current-password" />
+            <button type="button" class="login-reveal" id="loginReveal" onclick="toggleReveal()" aria-label="Show password">Show</button>
+          </div>
+        </div>
+        <button class="login-btn" id="loginBtn" onclick="doLogin()">Sign In</button>
+        <p class="login-err" id="loginErr" aria-live="polite"></p>
+        <p class="login-foot">With love &amp; gratitude</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SHELL -->
+<div id="adminShell">
+  <div class="overlay-backdrop-mobile" id="mobileBackdrop" onclick="toggleSidebar(false)"></div>
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="sb-names">Jerald &amp; Ronalyn</div>
+      <span class="sb-tag">RSVP Admin</span>
+    </div>
+    <div class="nav-item active" data-view="dashboard" onclick="switchView('dashboard')"><span class="nav-icon">◆</span> Dashboard</div>
+    <div class="nav-item" data-view="guests" onclick="switchView('guests')"><span class="nav-icon">☰</span> Guest List</div>
+    <div class="nav-item" data-view="responses" onclick="switchView('responses')"><span class="nav-icon">✎</span> Responses</div>
+    <div class="nav-item" data-view="settings" onclick="switchView('settings')"><span class="nav-icon">⚙</span> Settings</div>
+    <div class="sidebar-foot"><span class="logout-link" onclick="doLogout()">Log Out</span></div>
+  </nav>
+
+  <main class="main">
+
+    <!-- DASHBOARD -->
+    <div class="view active" id="view-dashboard">
+      <div class="topbar">
+        <div><button class="hamburger" onclick="toggleSidebar(true)">☰</button></div>
+        <div><div class="page-title">Dashboard</div><div class="page-sub">Summary of your wedding RSVPs</div></div>
+        <div class="topbar-actions">
+          <span class="updated-tag" id="dashUpdated"></span>
+          <button class="refresh-btn" onclick="loadDashboard()">Refresh</button>
+        </div>
+      </div>
+      <div id="rsvpFlagWrap"></div>
+      <div class="stat-grid" id="statGrid"></div>
+      <div class="panels-grid" id="panelsGrid"></div>
+    </div>
+
+    <!-- GUEST LIST -->
+    <div class="view" id="view-guests">
+      <div class="topbar">
+        <div><button class="hamburger" onclick="toggleSidebar(true)">☰</button></div>
+        <div><div class="page-title">Guest List</div><div class="page-sub">Invited guests &amp; seat counts</div></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn outline" onclick="openImportModal()">Import</button>
+          <button class="btn outline" onclick="exportGuests()">Export</button>
+          <button class="btn" onclick="openGuestModal()">+ Add Guest</button>
+        </div>
+      </div>
+      <div class="toolbar">
+        <input class="search-box" id="guestSearch" placeholder="Search guest name…" oninput="renderGuestTable()" />
+      </div>
+      <div class="bulk-bar" id="guestBulkBar">
+        <span id="guestBulkCount">0 selected</span>
+        <button class="btn danger" style="padding:6px 14px;" onclick="bulkDeleteGuests()">Delete Selected</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th style="width:36px;"><input type="checkbox" id="guestSelectAll" onchange="toggleSelectAllGuests(this)" /></th>
+            <th>Guest Full Name</th><th>Seats Allotted</th><th style="width:100px;">Actions</th>
+          </tr></thead>
+          <tbody id="guestTbody"></tbody>
+        </table>
+      </div>
+      <div id="guestEmpty" class="empty-state" style="display:none;">No guests yet — add your first guest.</div>
+      <div class="pagination" id="guestPagination"></div>
+      <p class="hint">Tap a guest row to see full details, including their RSVP status.</p>
+    </div>
+
+    <!-- RESPONSES -->
+    <div class="view" id="view-responses">
+      <div class="topbar">
+        <div><button class="hamburger" onclick="toggleSidebar(true)">☰</button></div>
+        <div><div class="page-title">Responses</div><div class="page-sub">Submitted RSVPs — main guest &amp; companions</div></div>
+        <div class="topbar-actions">
+          <span class="updated-tag" id="respUpdated"></span>
+          <button class="btn outline" onclick="exportResponses()">Export</button>
+          <button class="refresh-btn" onclick="loadResponses()">Refresh</button>
+        </div>
+      </div>
+      <div class="toolbar">
+        <input class="search-box" id="respSearch" placeholder="Search guest, companion or message…" oninput="renderRespTable()" />
+        <select class="search-box" style="flex:none;width:170px;" id="respFilter" onchange="renderRespTable()">
+          <option value="">All RSVPs</option>
+          <option value="Joyfully Accepts">Attending (Main)</option>
+          <option value="Regretfully Declines">Not Attending (Main)</option>
+          <option value="__msg">With a Message</option>
+        </select>
+      </div>
+      <div class="bulk-bar" id="respBulkBar">
+        <span id="respBulkCount">0 selected</span>
+        <button class="btn danger" style="padding:6px 14px;" onclick="bulkDeleteResponses()">Delete Selected</button>
+      </div>
+      <div class="select-all-row">
+        <input type="checkbox" id="respSelectAll" onchange="toggleSelectAllResp(this)" />
+        <label for="respSelectAll">Select all on this page</label>
+      </div>
+      <div class="resp-list" id="respCardList"></div>
+      <div id="respEmpty" class="empty-state" style="display:none;">No RSVPs yet.</div>
+      <div class="pagination" id="respPagination"></div>
+      <p class="hint">Tap a card to see the full group details. Each companion's response appears below the main guest.</p>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="view" id="view-settings">
+      <div class="topbar">
+        <div><button class="hamburger" onclick="toggleSidebar(true)">☰</button></div>
+        <div><div class="page-title">Settings</div><div class="page-sub">RSVP Configuration</div></div>
+      </div>
+      <div class="section-title">RSVP Availability</div>
+      <div class="settings-card">
+        <div class="toggle-row">
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--nv-mid);">Accept new RSVPs</div>
+            <div class="hint">When off, guests will see a "closed" message instead of the form.</div>
+          </div>
+          <div class="switch" id="rsvpSwitch" onclick="toggleRsvpActive()"></div>
+        </div>
+      </div>
+
+      <div class="section-title">Admin Password</div>
+      <div class="settings-card pw-form">
+        <div style="font-size:13px;font-weight:700;color:var(--nv-mid);margin-bottom:4px;">Change password</div>
+        <div class="hint" style="margin:0 0 16px;">You stay signed in here; any other device signed in to the dashboard will be signed out.</div>
+        <div class="field"><label for="pwCurrent">Current Password</label><input type="password" id="pwCurrent" autocomplete="current-password" /></div>
+        <div class="field"><label for="pwNew">New Password</label><input type="password" id="pwNew" autocomplete="new-password" placeholder="At least 6 characters" /></div>
+        <div class="field"><label for="pwConfirm">Confirm New Password</label><input type="password" id="pwConfirm" autocomplete="new-password" /></div>
+        <label class="pw-show"><input type="checkbox" id="pwShow" onchange="togglePwShow(this)" /> Show passwords</label>
+        <div class="pw-actions">
+          <button class="btn" id="pwBtn" onclick="changePassword()">Update Password</button>
+          <span class="pw-msg" id="pwMsg" aria-live="polite"></span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- GUEST MODAL (add / edit) -->
+<div class="overlay" id="guestModalOverlay">
+  <div class="modal-box">
+    <div class="modal-hd"><h3 id="guestModalTitle">Add Guest</h3><span class="modal-close" onclick="closeGuestModal()">✕</span></div>
+    <div class="modal-bd">
+      <input type="hidden" id="guestModalRow" />
+      <div class="field"><label>Guest Full Name</label><input type="text" id="guestModalName" placeholder="e.g. Juan dela Cruz" /></div>
+      <div class="field"><label>Seats Allotted</label><input type="number" id="guestModalSeats" min="1" max="20" value="1" /></div>
+      <p class="hint">Open companion mode — guests can enter up to this many names (including themselves) when they RSVP.</p>
+    </div>
+    <div class="modal-ft"><button class="btn outline" onclick="closeGuestModal()">Cancel</button><button class="btn" onclick="saveGuest()">Save Guest</button></div>
+  </div>
+</div>
+
+<!-- GUEST DETAIL MODAL (read-only view, opened by tapping a guest row) -->
+<div class="overlay" id="guestDetailOverlay">
+  <div class="modal-box">
+    <div class="modal-hd"><h3>Guest Details</h3><span class="modal-close" onclick="closeGuestDetailModal()">✕</span></div>
+    <div class="modal-bd" id="guestDetailBody"></div>
+    <input type="hidden" id="guestDetailRow" />
+    <div class="modal-ft">
+      <button class="btn outline" onclick="deleteFromDetail()">Delete</button>
+      <button class="btn" onclick="editFromDetail()">Edit</button>
+    </div>
+  </div>
+</div>
+
+<!-- STAT DETAIL MODAL (opened by tapping a dashboard card) -->
+<div class="overlay" id="statDetailOverlay">
+  <div class="modal-box">
+    <div class="modal-hd"><h3 id="statDetailTitle">Details</h3><span class="modal-close" onclick="closeStatDetail()">✕</span></div>
+    <div class="modal-bd" id="statDetailBody"></div>
+    <div class="modal-ft"><button class="btn outline" onclick="closeStatDetail()">Close</button></div>
+  </div>
+</div>
+
+<!-- RESPONSE DETAIL MODAL -->
+<div class="overlay" id="respModalOverlay">
+  <div class="modal-box">
+    <div class="modal-hd"><h3>RSVP Details</h3><span class="modal-close" onclick="closeRespModal()">✕</span></div>
+    <div class="modal-bd" id="respModalBody"></div>
+    <div class="modal-ft"><button class="btn outline" onclick="closeRespModal()">Close</button></div>
+  </div>
+</div>
+
+<!-- IMPORT MODAL -->
+<div class="overlay" id="importModalOverlay">
+  <div class="modal-box">
+    <div class="modal-hd"><h3>Import Guest List</h3><span class="modal-close" onclick="closeImportModal()">✕</span></div>
+    <div class="modal-bd">
+      <div class="dropzone" id="dropzone" onclick="document.getElementById('fileInput').click()">
+        <p><span>Click to upload</span> or drag a .xlsx / .csv file here</p>
+      </div>
+      <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" style="display:none;" onchange="handleImportFile(this.files[0])" />
+      <p class="hint">Required columns: <strong>Guest Full Name</strong>, <strong>Seats Allotted</strong>. Existing names will be automatically skipped.</p>
+      <p class="hint"><span style="cursor:pointer;color:var(--nv-mid);font-weight:700;text-decoration:underline;" onclick="downloadTemplate()">Download template file</span></p>
+      <p id="importStatus" class="hint"></p>
+    </div>
+    <div class="modal-ft"><button class="btn outline" onclick="closeImportModal()">Close</button></div>
+  </div>
+</div>
+
+<!-- CONFIRM MODAL -->
+<div class="overlay" id="confirmOverlay">
+  <div class="modal-box">
+    <div class="modal-hd"><h3 id="confirmTitle">Confirm</h3><span class="modal-close" onclick="closeConfirm()">✕</span></div>
+    <div class="modal-bd"><p id="confirmMsg" style="font-size:13.5px;color:rgba(47,59,42,0.75);"></p></div>
+    <div class="modal-ft"><button class="btn outline" onclick="closeConfirm()">Cancel</button><button class="btn danger" id="confirmActionBtn">Confirm</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   Vercel backend bridge — same call style as google.script.run:
+   server.run.withSuccessHandler(fn).withFailureHandler(fn).someFunction(args)
+   Every call is a POST to /api/rpc (see api/rpc.js).
+============================================================ */
+var server = {
+  get run() {
+    var ok = null, fail = null, runner;
+    runner = new Proxy({}, { get: function (_, fnName) {
+      if (fnName === 'withSuccessHandler') return function (f) { ok = f; return runner; };
+      if (fnName === 'withFailureHandler') return function (f) { fail = f; return runner; };
+      return function () {
+        var args = Array.prototype.slice.call(arguments);
+        var headers = { 'Content-Type': 'application/json' };
+        var token = null;
+        try { token = sessionStorage.getItem('rsvpAdminToken'); } catch (e) {}
+        if (token) headers['x-admin-token'] = token;
+        fetch('/api/rpc', { method: 'POST', headers: headers, body: JSON.stringify({ fn: fnName, args: args }) })
+          .then(function (res) {
+            return res.json().catch(function () {
+              return { message: res.status === 404
+                ? 'The server API was not found (HTTP 404). Make sure the api folder was deployed and the Vercel Root Directory is the project folder.'
+                : 'The server returned an unexpected response (HTTP ' + res.status + '). Open /api/health for details.' };
+            }).then(function (body) {
+              if (res.status === 401 && body.authError && window.onAdminAuthExpired) { window.onAdminAuthExpired(body.message); return; }
+              if (!res.ok) throw new Error(body.message || ('HTTP ' + res.status));
+              if (ok) ok(body);
+            });
+          })
+          .catch(function (err) { if (fail) fail(err); });
+      };
+    }});
+    return runner;
+  }
+};
+
+/* ============================================================
+   STATE
+============================================================ */
+var guestList = [], guestFiltered = [], guestPage = 1, guestPerPage = 10, guestSelected = new Set();
+var respList = [], respFiltered = [], respPage = 1, respPerPage = 10, respSelected = new Set();
+var rsvpActiveState = true;
+var dashboardAutoTimer = null;
+var DASHBOARD_AUTO_REFRESH_MS = 20000;
+
+/* ============================================================
+   AUTH
+============================================================ */
+function doLogin(){
+  var pass = document.getElementById('loginPass').value;
+  var btn = document.getElementById('loginBtn');
+  btn.disabled = true; btn.textContent = 'Checking…';
+  server.run
+    .withSuccessHandler(function(res){
+      btn.disabled = false; btn.textContent = 'Sign In';
+      if(res && res.success){
+        sessionStorage.setItem('rsvpAdminToken', res.token);
+        showShell();
+      } else {
+        document.getElementById('loginErr').textContent = (res && res.message) || 'Incorrect password.';
+      }
+    })
+    .withFailureHandler(function(err){
+      btn.disabled = false; btn.textContent = 'Sign In';
+      document.getElementById('loginErr').textContent = (err && err.message && err.message !== 'Failed to fetch')
+        ? err.message : 'Could not reach the server. Check your connection and try again.';
+    })
+    .adminLogin(pass);
+}
+document.getElementById('loginPass').addEventListener('keydown', function(e){ if(e.key==='Enter') doLogin(); });
+document.getElementById('loginPass').addEventListener('input', function(){ document.getElementById('loginErr').textContent = ''; });
+function toggleReveal(){
+  var inp = document.getElementById('loginPass'), b = document.getElementById('loginReveal');
+  var show = inp.type === 'password';
+  inp.type = show ? 'text' : 'password';
+  b.textContent = show ? 'Hide' : 'Show';
+  b.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+}
+
+function doLogout(){
+  sessionStorage.removeItem('rsvpAdminToken');
+  document.getElementById('adminShell').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('loginPass').value = '';
+  stopDashboardAutoRefresh();
+}
+
+function showShell(){
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('adminShell').style.display = 'flex';
+  loadDashboard(); loadGuests(); loadResponses();
+  startDashboardAutoRefresh();
+}
+
+function startDashboardAutoRefresh(){
+  stopDashboardAutoRefresh();
+  dashboardAutoTimer = setInterval(function(){
+    // only poll while the tab is visible — no point burning quota in a background tab
+    if(document.visibilityState === 'visible') loadDashboard();
+  }, DASHBOARD_AUTO_REFRESH_MS);
+}
+function stopDashboardAutoRefresh(){
+  if(dashboardAutoTimer){ clearInterval(dashboardAutoTimer); dashboardAutoTimer = null; }
+}
+document.addEventListener('visibilitychange', function(){
+  if(document.visibilityState === 'visible' && dashboardAutoTimer) loadDashboard();
+});
+
+window.onAdminAuthExpired = function(msg){
+  doLogout();
+  document.getElementById('loginErr').textContent = msg || 'Your session has expired. Please sign in again.';
+};
+if(sessionStorage.getItem('rsvpAdminToken')) showShell();
+
+/* ============================================================
+   NAV
+============================================================ */
+function switchView(name){
+  document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('active'); });
+  document.getElementById('view-'+name).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.toggle('active', n.dataset.view===name); });
+  toggleSidebar(false);
+}
+function toggleSidebar(open){
+  document.getElementById('sidebar').classList.toggle('open', open);
+  document.getElementById('mobileBackdrop').classList.toggle('open', open);
+}
+
+/* ============================================================
+   TOAST
+============================================================ */
+function showToast(msg, isErr){
+  var t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast show' + (isErr?' err':'');
+  setTimeout(function(){ t.className = 'toast'; }, 2600);
+}
+function nowTime(){
+  return new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+}
+
+/* ============================================================
+   DASHBOARD
+============================================================ */
+function loadDashboard(){
+  server.run.withSuccessHandler(renderDashboard).withFailureHandler(function(){ showToast('Dashboard failed to load', true); }).adminGetDashboard();
+}
+function renderDashboard(res){
+  if(!res || !res.success) return;
+  rsvpActiveState = res.rsvpActive;
+  document.getElementById('rsvpFlagWrap').innerHTML =
+    '<div class="rsvp-flag '+(rsvpActiveState?'on':'off')+'"><span class="flag-dot"></span> RSVP is currently '+(rsvpActiveState?'OPEN':'CLOSED')+'</div>';
+
+  var s = res.stats;
+  var cards = [
+    {label:'Total Primary Guests', val:s.totalInvited, icon:'👤', cls:'', key:'totalMain'},
+    {label:'Total Invited', val:s.totalSeatsAllotted, icon:'👥', cls:'', key:'totalInvited'},
+    {label:'Responded', val:s.totalResponses, icon:'✉', cls:'', key:'responded'},
+    {label:'Pending', val:s.pending, icon:'⏳', cls:'warn', key:'pending'},
+    {label:'Attending', val:s.attending, icon:'✓', cls:'good', key:'accepted'},
+    {label:'Not Attending', val:s.notAttending, icon:'✕', cls:'bad', key:'declined'},
+    {label:'Attending Guests', val:s.seatsConfirmed, icon:'✦', cls:'good', key:'attending'},
+    {label:'Not Attending Guests', val:s.notAttendingGuests, icon:'🚫', cls:'bad', key:'notAttending'}
+  ];
+  document.getElementById('statGrid').innerHTML = cards.map(function(c){
+    return '<div class="stat-card '+c.cls+'" onclick="openStatDetail(\''+c.key+'\')"><span class="stat-icon">'+c.icon+'</span><div class="stat-label">'+c.label+'</div><div class="stat-num">'+c.val+'</div></div>';
+  }).join('');
+
+  var total = s.totalInvited || 0;
+  function pct(v){ return total ? Math.round((v/total)*100) : 0; }
+  document.getElementById('panelsGrid').innerHTML =
+    '<div class="panel">'+
+      '<div class="panel-title">RSVP Status</div>'+
+      barRow('Attending', s.attending, pct(s.attending), 'good')+
+      barRow('Not Attending', s.notAttending, pct(s.notAttending), 'bad')+
+      barRow('Pending', s.pending, pct(s.pending), 'warn')+
+    '</div>'+
+    '<div class="panel">'+
+      '<div class="panel-title">Response Progress</div>'+
+      '<div class="progress-caption">'+s.totalResponses+' of '+total+' responded</div>'+
+      '<div class="bar-track"><div class="bar-fill" style="width:'+pct(s.totalResponses)+'%;"></div></div>'+
+    '</div>';
+
+  document.getElementById('dashUpdated').textContent = 'Updated ' + nowTime();
+  updateSwitch();
+}
+function barRow(label, val, pctVal, cls){
+  return '<div class="bar-row"><div class="bar-label">'+label+'</div>'+
+    '<div class="bar-track"><div class="bar-fill '+cls+'" style="width:'+pctVal+'%;"></div></div>'+
+    '<div class="bar-value">'+val+'</div></div>';
+}
+function updateSwitch(){
+  document.getElementById('rsvpSwitch').classList.toggle('on', rsvpActiveState);
+}
+
+/* ── Dashboard card click → detail modal ── */
+function statBadge(status){
+  if(status==='Joyfully Accepts') return '<span class="badge accept">Attending</span>';
+  if(status==='Regretfully Declines') return '<span class="badge decline">Not Attending</span>';
+  return '';
+}
+function openStatDetail(key){
+  var title = 'Details', items = [], emptyText = 'Nothing to show yet.';
+
+  if(key==='totalMain' || key==='totalInvited'){
+    title = key==='totalMain' ? 'All Primary Guests' : 'Seats Allotted';
+    items = guestList.map(function(g){ return {name:g.name, sub:g.seats+' seats', badge:''}; });
+    emptyText = 'No guests added yet.';
+  } else if(key==='responded'){
+    title = 'All RSVPs';
+    items = respList.map(function(r){
+      return {name:r.name, sub:(r.timestamp?new Date(r.timestamp).toLocaleString():'')+' &middot; '+r.totalAttending+' attending', badge:statBadge(r.mainStatus)};
+    });
+    emptyText = 'No RSVPs yet.';
+  } else if(key==='pending'){
+    title = 'Pending — Not Yet Responded';
+    items = guestList.filter(function(g){
+      return !respList.some(function(r){ return r.name.toLowerCase()===g.name.toLowerCase(); });
+    }).map(function(g){ return {name:g.name, sub:g.seats+' seats', badge:''}; });
+    emptyText = 'Everyone has responded!';
+  } else if(key==='accepted'){
+    title = 'Attending (Main Guest)';
+    items = respList.filter(function(r){ return r.mainStatus==='Joyfully Accepts'; })
+      .map(function(r){ return {name:r.name, sub:r.totalAttending+' attending in group', badge:statBadge(r.mainStatus)}; });
+    emptyText = 'No RSVPs attending yet.';
+  } else if(key==='declined'){
+    title = 'Not Attending (Main Guest)';
+    items = respList.filter(function(r){ return r.mainStatus==='Regretfully Declines'; })
+      .map(function(r){ return {name:r.name, sub:(r.timestamp?new Date(r.timestamp).toLocaleString():''), badge:statBadge(r.mainStatus)}; });
+    emptyText = 'No one has declined yet.';
+  } else if(key==='attending' || key==='notAttending'){
+    var wantStatus = key==='attending' ? 'Joyfully Accepts' : 'Regretfully Declines';
+    title = key==='attending' ? 'All Attending Guests' : 'All Not Attending Guests';
+    respList.forEach(function(r){
+      r.guestList.forEach(function(g){
+        if(g.status===wantStatus) items.push({name:g.name, sub:'With '+r.name, badge:statBadge(g.status)});
+      });
+    });
+    emptyText = key==='attending' ? 'No confirmed attendees yet.' : 'No one has declined yet.';
+  } else {
+    return;
+  }
+
+  document.getElementById('statDetailTitle').textContent = title + ' (' + items.length + ')';
+  if(!items.length){
+    document.getElementById('statDetailBody').innerHTML = '<p class="hint" style="margin-top:0;">'+emptyText+'</p>';
+  } else {
+    document.getElementById('statDetailBody').innerHTML = '<ul class="stat-list">'+items.map(function(it){
+      return '<li><span class="sl-name">'+escapeHtml(it.name)+(it.sub?'<span class="sl-sub">'+it.sub+'</span>':'')+'</span>'+it.badge+'</li>';
+    }).join('')+'</ul>';
+  }
+  document.getElementById('statDetailOverlay').classList.add('active');
+}
+function closeStatDetail(){ document.getElementById('statDetailOverlay').classList.remove('active'); }
+
+/* ============================================================
+   GUEST LIST
+============================================================ */
+function loadGuests(){
+  server.run.withSuccessHandler(function(res){
+    if(res && res.success){ guestList = res.guests; guestSelected.clear(); renderGuestTable(); }
+    else showToast('Guest list failed to load', true);
+  }).withFailureHandler(function(){ showToast('Guest list failed to load', true); }).adminGetGuestList();
+}
+function renderGuestTable(){
+  var q = document.getElementById('guestSearch').value.trim().toLowerCase();
+  guestFiltered = guestList.filter(function(g){ return g.name.toLowerCase().indexOf(q) > -1; });
+  if(guestPage > Math.max(1, Math.ceil(guestFiltered.length/guestPerPage))) guestPage = 1;
+  var start = (guestPage-1)*guestPerPage;
+  var pageRows = guestFiltered.slice(start, start+guestPerPage);
+
+  document.getElementById('guestEmpty').style.display = guestFiltered.length ? 'none' : 'block';
+  document.getElementById('guestTbody').innerHTML = pageRows.map(function(g){
+    return '<tr style="cursor:pointer;" onclick="openGuestDetailModal('+g.id+')">'+
+      '<td onclick="event.stopPropagation()"><input type="checkbox" data-row="'+g.id+'" onchange="onGuestCheck(this)" '+(guestSelected.has(g.id)?'checked':'')+' /></td>'+
+      '<td>'+escapeHtml(g.name)+'</td>'+
+      '<td>'+g.seats+'</td>'+
+      '<td class="row-actions" onclick="event.stopPropagation()">'+
+        '<button class="icon-btn" onclick="openGuestModal('+g.id+')" title="Edit">✎</button>'+
+        '<button class="icon-btn del" onclick="confirmDeleteGuest('+g.id+',\''+escapeHtml(g.name).replace(/'/g,"\\'")+'\')" title="Delete">✕</button>'+
+      '</td></tr>';
+  }).join('');
+  renderPagination('guestPagination', guestFiltered.length, guestPage, guestPerPage, function(p){ guestPage=p; renderGuestTable(); });
+  updateGuestBulkBar();
+}
+function onGuestCheck(el){
+  var row = Number(el.dataset.row);
+  if(el.checked) guestSelected.add(row); else guestSelected.delete(row);
+  updateGuestBulkBar();
+}
+function toggleSelectAllGuests(el){
+  var start = (guestPage-1)*guestPerPage;
+  var pageRows = guestFiltered.slice(start, start+guestPerPage);
+  pageRows.forEach(function(g){ if(el.checked) guestSelected.add(g.id); else guestSelected.delete(g.id); });
+  renderGuestTable();
+}
+function updateGuestBulkBar(){
+  var bar = document.getElementById('guestBulkBar');
+  bar.classList.toggle('show', guestSelected.size>0);
+  document.getElementById('guestBulkCount').textContent = guestSelected.size + ' selected';
+}
+function bulkDeleteGuests(){
+  if(!guestSelected.size) return;
+  openConfirm('Delete Guests', 'Delete '+guestSelected.size+' selected guests? Their submitted RSVP will also be removed if any. This cannot be undone.', function(){
+    server.run.withSuccessHandler(function(res){
+      closeConfirm(); showToast(res.message, !res.success); loadGuests(); loadResponses(); loadDashboard();
+    }).withFailureHandler(function(){ closeConfirm(); showToast('Could not delete', true); }).adminBulkDeleteGuests(Array.from(guestSelected));
+  });
+}
+function confirmDeleteGuest(row, name){
+  openConfirm('Delete Guest', 'Delete "'+name+'" from the guest list? Their submitted RSVP will also be removed if any.', function(){
+    server.run.withSuccessHandler(function(res){
+      closeConfirm(); showToast(res.message, !res.success); loadGuests(); loadResponses(); loadDashboard();
+    }).withFailureHandler(function(){ closeConfirm(); showToast('Could not delete', true); }).adminDeleteGuest(row);
+  });
+}
+function openGuestModal(row){
+  document.getElementById('guestModalTitle').textContent = row ? 'Edit Guest' : 'Add Guest';
+  document.getElementById('guestModalRow').value = row || '';
+  if(row){
+    var g = guestList.find(function(x){ return x.id===row; });
+    document.getElementById('guestModalName').value = g ? g.name : '';
+    document.getElementById('guestModalSeats').value = g ? g.seats : 1;
+  } else {
+    document.getElementById('guestModalName').value = '';
+    document.getElementById('guestModalSeats').value = 1;
+  }
+  document.getElementById('guestModalOverlay').classList.add('active');
+}
+function closeGuestModal(){ document.getElementById('guestModalOverlay').classList.remove('active'); }
+function saveGuest(){
+  var row = document.getElementById('guestModalRow').value;
+  var name = document.getElementById('guestModalName').value.trim();
+  var seats = Number(document.getElementById('guestModalSeats').value) || 1;
+  if(!name){ showToast('Guest name is required', true); return; }
+  if(row) server.run.withSuccessHandler(onGuestSaved).withFailureHandler(onSaveFail).adminUpdateGuest(Number(row), name, seats);
+  else server.run.withSuccessHandler(onGuestSaved).withFailureHandler(onSaveFail).adminAddGuest(name, seats);
+}
+function onGuestSaved(res){
+  if(res && res.success){ closeGuestModal(); showToast(res.message); loadGuests(); loadDashboard(); }
+  else showToast((res && res.message) || 'Save failed', true);
+}
+function onSaveFail(){ showToast('Server error while saving', true); }
+
+/* ── Guest detail modal (read-only, tap a row) ── */
+function openGuestDetailModal(row){
+  var g = guestList.find(function(x){ return x.id===row; });
+  if(!g) return;
+  var match = respList.find(function(r){ return r.name.toLowerCase() === g.name.toLowerCase(); });
+  var statusHtml;
+  if(match){
+    var badge = match.mainStatus==='Joyfully Accepts' ? '<span class="badge accept">Attending</span>' : '<span class="badge decline">Not Attending</span>';
+    var companions = match.guestList.slice(1);
+    var compHtml = companions.length ? '<ul class="guest-name-list">'+companions.map(function(c){
+      var cb = c.status==='Joyfully Accepts' ? '<span class="badge accept">Attending</span>' : '<span class="badge decline">Not Attending</span>';
+      return '<li>'+escapeHtml(c.name)+' '+cb+'</li>';
+    }).join('')+'</ul>' : '<p class="hint">No companions listed.</p>';
+    statusHtml =
+      '<div class="field"><label>RSVP Status</label>'+badge+'</div>'+
+      '<div class="field"><label>Total Attending</label><p>'+match.totalAttending+'</p></div>'+
+      '<div class="field"><label>Companions</label>'+compHtml+'</div>'+
+      (match.message ? '<div class="field"><label>Message to the Couple</label><div class="msg-block">'+escapeHtml(match.message)+'</div></div>' : '')+
+      '<div class="field"><label>Submitted</label><p>'+(match.timestamp?new Date(match.timestamp).toLocaleString():'—')+'</p></div>';
+  } else {
+    statusHtml = '<div class="field"><label>RSVP Status</label><p class="hint" style="margin-top:0;">Not yet responded.</p></div>';
+  }
+  document.getElementById('guestDetailBody').innerHTML =
+    '<div class="field"><label>Guest Full Name</label><p style="font-size:15px;font-weight:700;color:var(--nv-mid);">'+escapeHtml(g.name)+'</p></div>'+
+    '<div class="field"><label>Seats Allotted</label><p>'+g.seats+'</p></div>'+
+    statusHtml;
+  document.getElementById('guestDetailRow').value = row;
+  document.getElementById('guestDetailOverlay').classList.add('active');
+}
+function closeGuestDetailModal(){ document.getElementById('guestDetailOverlay').classList.remove('active'); }
+function editFromDetail(){
+  var row = Number(document.getElementById('guestDetailRow').value);
+  closeGuestDetailModal();
+  openGuestModal(row);
+}
+function deleteFromDetail(){
+  var row = Number(document.getElementById('guestDetailRow').value);
+  var g = guestList.find(function(x){ return x.id===row; });
+  closeGuestDetailModal();
+  if(g) confirmDeleteGuest(row, g.name);
+}
+
+/* ── Export ── */
+function exportGuests(){
+  var rows = [['Guest Full Name','Seats Allotted']];
+  guestList.forEach(function(g){ rows.push([g.name, g.seats]); });
+  var ws = XLSX.utils.aoa_to_sheet(rows);
+  var wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Guest List');
+  XLSX.writeFile(wb, 'jerald-ronalyn-guest-list.xlsx');
+}
+function exportResponses(){
+  if(!respList.length){ showToast('No RSVPs to export', true); return; }
+  var maxNames = 0;
+  respList.forEach(function(r){ if(r.guestList.length > maxNames) maxNames = r.guestList.length; });
+  var header = ['Main Guest', 'Main Status', 'Total Attending', 'Submitted', 'Message to the Couple'];
+  for(var i=1; i<=maxNames; i++){ header.push('Guest Name '+i); header.push('Guest Status '+i); }
+  var rows = [header];
+  respList.forEach(function(r){
+    var row = [
+      r.name,
+      r.mainStatus==='Joyfully Accepts' ? 'Attending' : 'Not Attending',
+      r.totalAttending,
+      r.timestamp ? new Date(r.timestamp).toLocaleString() : '',
+      r.message || ''
+    ];
+    for(var i=0; i<maxNames; i++){
+      var g = r.guestList[i];
+      row.push(g ? g.name : '');
+      row.push(g ? (g.status==='Joyfully Accepts' ? 'Attending' : 'Not Attending') : '');
+    }
+    rows.push(row);
+  });
+  var ws = XLSX.utils.aoa_to_sheet(rows);
+  var wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'RSVPs');
+  XLSX.writeFile(wb, 'jerald-ronalyn-rsvp-responses.xlsx');
+}
+function downloadTemplate(){
+  var rows = [['Guest Full Name','Seats Allotted'], ['Juan dela Cruz', 2]];
+  var ws = XLSX.utils.aoa_to_sheet(rows);
+  var wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Template');
+  XLSX.writeFile(wb, 'guest-list-template.xlsx');
+}
+
+/* ── Import ── */
+function openImportModal(){ document.getElementById('importModalOverlay').classList.add('active'); document.getElementById('importStatus').textContent=''; }
+function closeImportModal(){ document.getElementById('importModalOverlay').classList.remove('active'); }
+var dz = document.getElementById('dropzone');
+dz.addEventListener('dragover', function(e){ e.preventDefault(); dz.classList.add('drag'); });
+dz.addEventListener('dragleave', function(){ dz.classList.remove('drag'); });
+dz.addEventListener('drop', function(e){ e.preventDefault(); dz.classList.remove('drag'); if(e.dataTransfer.files[0]) handleImportFile(e.dataTransfer.files[0]); });
+
+function handleImportFile(file){
+  if(!file) return;
+  var status = document.getElementById('importStatus');
+  status.textContent = 'Reading file…';
+  var reader = new FileReader();
+  reader.onload = function(e){
+    try{
+      var wb = XLSX.read(e.target.result, {type:'array'});
+      var ws = wb.Sheets[wb.SheetNames[0]];
+      var json = XLSX.utils.sheet_to_json(ws, {defval:''});
+      var rows = json.map(function(r){
+        var name = r['Guest Full Name'] || r['Name'] || r['name'] || '';
+        var seats = r['Seats Allotted'] || r['Number of Seats Allotted'] || r['Seats'] || r['seats'] || 1;
+        return { name: String(name).trim(), seats: Number(seats) || 1 };
+      }).filter(function(r){ return r.name; });
+      if(!rows.length){ status.textContent = 'No valid rows found in file.'; return; }
+      status.textContent = 'Importing ' + rows.length + ' guests…';
+      server.run.withSuccessHandler(function(res){
+        status.textContent = res.message || 'Done.';
+        showToast(res.message, !res.success); loadGuests(); loadDashboard();
+      }).withFailureHandler(function(){ status.textContent = 'Import failed.'; }).adminImportGuests(rows);
+    }catch(err){ status.textContent = 'Could not read file: ' + err.message; }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+/* ============================================================
+   RESPONSES — cards showing main guest + each companion's own status
+============================================================ */
+function loadResponses(){
+  server.run.withSuccessHandler(function(res){
+    if(res && res.success){ respList = res.responses; respSelected.clear(); renderRespTable(); }
+    else showToast('Responses failed to load', true);
+  }).withFailureHandler(function(){ showToast('Responses failed to load', true); }).adminGetResponses();
+}
+function renderRespTable(){
+  var q = document.getElementById('respSearch').value.trim().toLowerCase();
+  var filterStatus = document.getElementById('respFilter').value;
+  respFiltered = respList.filter(function(r){
+    var matchQ = !q || r.name.toLowerCase().indexOf(q) > -1 ||
+      (r.message || '').toLowerCase().indexOf(q) > -1 ||
+      r.guestList.some(function(g){ return g.name.toLowerCase().indexOf(q) > -1; });
+    var matchS = !filterStatus || (filterStatus === '__msg' ? !!r.message : r.mainStatus === filterStatus);
+    return matchQ && matchS;
+  });
+  if(respPage > Math.max(1, Math.ceil(respFiltered.length/respPerPage))) respPage = 1;
+  var start = (respPage-1)*respPerPage;
+  var pageRows = respFiltered.slice(start, start+respPerPage);
+
+  document.getElementById('respEmpty').style.display = respFiltered.length ? 'none' : 'block';
+  document.getElementById('respCardList').innerHTML = pageRows.map(function(r){
+    var badge = r.mainStatus==='Joyfully Accepts' ? '<span class="badge accept">Attending</span>' : '<span class="badge decline">Not Attending</span>';
+    var dt = r.timestamp ? new Date(r.timestamp).toLocaleString() : '';
+    var companions = r.guestList.slice(1);
+    var body = companions.length ?
+      '<div class="resp-card-companions">'+companions.map(function(c){
+        var cls = c.status==='Joyfully Accepts' ? 'accept' : 'decline';
+        var lbl = c.status==='Joyfully Accepts' ? 'Attending' : 'Not Attending';
+        return '<span class="companion-chip '+cls+'">'+escapeHtml(c.name)+' <em>&middot; '+lbl+'</em></span>';
+      }).join('')+'</div>'
+      : '<div class="no-companions">No companions in this group.</div>';
+    if(r.message) body += '<div class="resp-card-message">'+escapeHtml(r.message)+'</div>';
+    return '<div class="resp-card" onclick="openRespModal('+r.id+')">'+
+      '<div class="resp-card-top">'+
+        '<input type="checkbox" data-row="'+r.id+'" onclick="event.stopPropagation()" onchange="onRespCheck(this)" '+(respSelected.has(r.id)?'checked':'')+' />'+
+        '<div class="resp-card-main">'+
+          '<div class="resp-card-name">'+escapeHtml(r.name)+'</div>'+
+          '<div class="resp-card-meta">'+dt+' &middot; '+r.totalAttending+' attending'+(r.message?'<span class="msg-tag">&#9993; Message</span>':'')+'</div>'+
+        '</div>'+
+        badge+
+        '<button class="icon-btn del" onclick="event.stopPropagation(); confirmDeleteResp('+r.id+',\''+escapeHtml(r.name).replace(/'/g,"\\'")+'\')" title="Delete">✕</button>'+
+      '</div>'+
+      body+
+    '</div>';
+  }).join('');
+  renderPagination('respPagination', respFiltered.length, respPage, respPerPage, function(p){ respPage=p; renderRespTable(); });
+  updateRespBulkBar();
+  document.getElementById('respUpdated').textContent = 'Updated ' + nowTime();
+}
+function onRespCheck(el){
+  var row = Number(el.dataset.row);
+  if(el.checked) respSelected.add(row); else respSelected.delete(row);
+  updateRespBulkBar();
+}
+function toggleSelectAllResp(el){
+  var start = (respPage-1)*respPerPage;
+  var pageRows = respFiltered.slice(start, start+respPerPage);
+  pageRows.forEach(function(r){ if(el.checked) respSelected.add(r.id); else respSelected.delete(r.id); });
+  renderRespTable();
+}
+function updateRespBulkBar(){
+  var bar = document.getElementById('respBulkBar');
+  bar.classList.toggle('show', respSelected.size>0);
+  document.getElementById('respBulkCount').textContent = respSelected.size + ' selected';
+}
+function bulkDeleteResponses(){
+  if(!respSelected.size) return;
+  openConfirm('Delete RSVPs', 'Delete '+respSelected.size+' selected RSVPs? This cannot be undone.', function(){
+    server.run.withSuccessHandler(function(res){
+      closeConfirm(); showToast(res.message, !res.success); loadResponses(); loadDashboard();
+    }).withFailureHandler(function(){ closeConfirm(); showToast('Could not delete', true); }).adminBulkDeleteResponses(Array.from(respSelected));
+  });
+}
+function confirmDeleteResp(row, name){
+  openConfirm('Delete RSVP', 'Delete the RSVP from "'+name+'"?', function(){
+    server.run.withSuccessHandler(function(res){
+      closeConfirm(); showToast(res.message, !res.success); loadResponses(); loadDashboard();
+    }).withFailureHandler(function(){ closeConfirm(); showToast('Could not delete', true); }).adminDeleteResponse(row);
+  });
+}
+function openRespModal(row){
+  var r = respList.find(function(x){ return x.id===row; });
+  if(!r) return;
+  var badge = r.mainStatus==='Joyfully Accepts' ? '<span class="badge accept">Attending</span>' : '<span class="badge decline">Not Attending</span>';
+  var companions = r.guestList.slice(1);
+  var names = companions.length ? '<ul class="guest-name-list">'+companions.map(function(g){
+    var gb = g.status==='Joyfully Accepts' ? '<span class="badge accept">Attending</span>' : '<span class="badge decline">Not Attending</span>';
+    return '<li>'+escapeHtml(g.name)+' '+gb+'</li>';
+  }).join('')+'</ul>' : '<p class="hint">No companions listed.</p>';
+  document.getElementById('respModalBody').innerHTML =
+    '<div class="field"><label>Main Guest</label><p style="font-size:15px;font-weight:700;color:var(--nv-mid);">'+escapeHtml(r.name)+'</p></div>'+
+    '<div class="field"><label>Main Status</label>'+badge+'</div>'+
+    '<div class="field"><label>Total Attending</label><p>'+r.totalAttending+'</p></div>'+
+    '<div class="field"><label>Companions &amp; Their Status</label>'+names+'</div>'+
+    '<div class="field"><label>Message to the Couple</label>'+(r.message?'<div class="msg-block">'+escapeHtml(r.message)+'</div>':'<p class="hint" style="margin-top:0;">No message left.</p>')+'</div>'+
+    '<div class="field"><label>Submitted</label><p>'+(r.timestamp?new Date(r.timestamp).toLocaleString():'—')+'</p></div>';
+  document.getElementById('respModalOverlay').classList.add('active');
+}
+function closeRespModal(){ document.getElementById('respModalOverlay').classList.remove('active'); }
+
+/* ============================================================
+   SETTINGS
+============================================================ */
+function toggleRsvpActive(){
+  var newState = !rsvpActiveState;
+  server.run.withSuccessHandler(function(res){
+    if(res && res.success){ rsvpActiveState = res.active; updateSwitch(); loadDashboard(); showToast('RSVP is now ' + (rsvpActiveState?'OPEN':'CLOSED')); }
+    else showToast('Setting failed to update', true);
+  }).withFailureHandler(function(){ showToast('Server error', true); }).adminSetRsvpActive(newState);
+}
+
+/* ============================================================
+   CHANGE PASSWORD
+============================================================ */
+function togglePwShow(el){
+  ['pwCurrent','pwNew','pwConfirm'].forEach(function(id){ document.getElementById(id).type = el.checked ? 'text' : 'password'; });
+}
+function setPwMsg(msg, ok){
+  var m = document.getElementById('pwMsg'); m.textContent = msg || ''; m.className = 'pw-msg ' + (ok ? 'ok' : 'err');
+}
+['pwCurrent','pwNew','pwConfirm'].forEach(function(id){
+  document.getElementById(id).addEventListener('input', function(){ setPwMsg(''); });
+  document.getElementById(id).addEventListener('keydown', function(e){ if(e.key==='Enter') changePassword(); });
+});
+function changePassword(){
+  var cur = document.getElementById('pwCurrent').value;
+  var nw  = document.getElementById('pwNew').value;
+  var cf  = document.getElementById('pwConfirm').value;
+  if(!cur){ setPwMsg('Enter your current password.'); return; }
+  if(nw.length < 6){ setPwMsg('New password must be at least 6 characters.'); return; }
+  if(nw !== cf){ setPwMsg('The new passwords don\u2019t match.'); return; }
+  if(nw === cur){ setPwMsg('New password must be different from the current one.'); return; }
+  var btn = document.getElementById('pwBtn');
+  btn.disabled = true; btn.textContent = 'Updating…';
+  server.run.withSuccessHandler(function(res){
+    btn.disabled = false; btn.textContent = 'Update Password';
+    if(res && res.success){
+      if(res.token) sessionStorage.setItem('rsvpAdminToken', res.token);
+      ['pwCurrent','pwNew','pwConfirm'].forEach(function(id){ document.getElementById(id).value = ''; });
+      document.getElementById('pwShow').checked = false; togglePwShow({checked:false});
+      setPwMsg(res.message || 'Password updated.', true);
+      showToast('Password updated');
+    } else {
+      setPwMsg((res && res.message) || 'Could not update the password.');
+    }
+  }).withFailureHandler(function(err){
+    btn.disabled = false; btn.textContent = 'Update Password';
+    setPwMsg((err && err.message) || 'Server error. Please try again.');
+  }).adminChangePassword(cur, nw);
+}
+
+/* ============================================================
+   CONFIRM MODAL
+============================================================ */
+function openConfirm(title, msg, onConfirm){
+  document.getElementById('confirmTitle').textContent = title;
+  document.getElementById('confirmMsg').textContent = msg;
+  var btn = document.getElementById('confirmActionBtn');
+  var newBtn = btn.cloneNode(true);
+  btn.parentNode.replaceChild(newBtn, btn);
+  newBtn.addEventListener('click', onConfirm);
+  document.getElementById('confirmOverlay').classList.add('active');
+}
+function closeConfirm(){ document.getElementById('confirmOverlay').classList.remove('active'); }
+
+/* ============================================================
+   PAGINATION (shared)
+============================================================ */
+function renderPagination(elId, total, page, perPage, onPage){
+  var el = document.getElementById(elId);
+  var totalPages = Math.max(1, Math.ceil(total/perPage));
+  var start = total ? (page-1)*perPage+1 : 0;
+  var end = Math.min(page*perPage, total);
+  var html = '<div>'+start+'–'+end+' of '+total+'</div><div class="pg-btns">';
+  html += '<button '+(page<=1?'disabled':'')+' onclick="_pg(\''+elId+'\','+(page-1)+')">‹</button>';
+  for(var p=1; p<=totalPages; p++){
+    if(totalPages>7 && p!==1 && p!==totalPages && Math.abs(p-page)>1){ if(p===2||p===totalPages-1) html+='<span style="padding:0 4px;">…</span>'; continue; }
+    html += '<button class="'+(p===page?'active':'')+'" onclick="_pg(\''+elId+'\','+p+')">'+p+'</button>';
+  }
+  html += '<button '+(page>=totalPages?'disabled':'')+' onclick="_pg(\''+elId+'\','+(page+1)+')">›</button></div>';
+  el.innerHTML = html;
+  window['_pgCb_'+elId] = onPage;
+}
+function _pg(elId, p){ if(window['_pgCb_'+elId]) window['_pgCb_'+elId](p); }
+
+/* ============================================================
+   UTIL
+============================================================ */
+function escapeHtml(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+document.querySelectorAll('.overlay').forEach(function(ov){
+  ov.addEventListener('click', function(e){ if(e.target===ov) ov.classList.remove('active'); });
+});
+</script>
+</body>
+</html>
